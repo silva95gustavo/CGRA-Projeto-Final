@@ -50,10 +50,12 @@ LightingScene.prototype.init = function(application) {
 
 	// Robot variables
 	this.robot = new MyRobot(this);
-	this.robotX = 7.5;
-	this.robotY = 4;
-	this.robotZ = 7.5;
-	this.robotDirection = 0;
+	this.robot.x = 7.5;
+	this.robot.y = 4;
+	this.robot.z = 7.5;
+	this.robot.resistance = this.robot.defaultResistance;
+	this.robot.angle = 210*degToRad;
+	this.robot.angleResistance = this.robot.defaultAngleResistance;
 
 	// For plane animation
 	this.prevTime = 0;
@@ -159,6 +161,12 @@ LightingScene.prototype.updateLights = function() {
 
 LightingScene.prototype.update = function(currTime) {
 		this.clock.update(currTime);
+		if(this.prevTime == 0)
+			this.prevTime = currTime;
+
+		this.robot.update(currTime - this.prevTime);
+
+		this.prevTime = currTime;
 }
 
 
@@ -315,9 +323,7 @@ LightingScene.prototype.display = function() {
 
 	// Robot
 	this.pushMatrix();
-		//this.translate(this.robotX, this.robotY, this.robotZ);
-		this.translate(this.robotX, this.robotY, this.robotZ);
-		this.rotate(210*degToRad, 0, 1, 0);
+		this.robot.applyTransforms();
 		this.robot.display();
 	this.popMatrix();
 
