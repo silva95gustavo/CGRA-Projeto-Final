@@ -73,15 +73,9 @@ MyInterface.prototype.processKeyboard = function(event) {
 	// for better cross-browser support, you may also check suggestions on using event.which in http://www.w3schools.com/jsref/event_key_keycode.asp
 	switch (event.keyCode)
 	{
-<<<<<<< HEAD
 		case (87):
 		case (119):     // any 'W'
 			this.scene.robot.accelerate(this.scene.robot.defaultAcceleration);
-=======
-		case (65):
-			console.log("Key 'A' pressed");
-		this.scene.doSomething();
->>>>>>> branch 'master' of https://github.com/gtugablue/CGRA-Projeto-Final.git
 			break;
 		case (83):
 		case (115):     // any 'S'
