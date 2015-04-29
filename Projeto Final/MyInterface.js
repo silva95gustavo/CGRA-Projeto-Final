@@ -33,16 +33,15 @@ MyInterface.prototype.init = function(application) {
 	this.gui.add(this.scene, 'doSomething');	
 
 	// add a group of controls (and open/expand by defult)
-
-	var group=this.gui.addFolder("Options");
+	
+	var group=this.gui.addFolder("Luzes");
 	group.open();
 
 	// add two check boxes to the group. The identifiers must be members variables of the scene initialized in scene.init as boolean
 	// e.g. this.option1=true; this.option2=false;
 
-	group.add(this.scene, 'option1');
-	group.add(this.scene, 'option2');
-
+	this.light1 = group.add(this.scene, 'centerLight');
+	this.light2 = group.add(this.scene, 'windowLight');
 	// add a slider
 	// must be a numeric variable of the scene, initialized in scene.init e.g.
 	// this.speed=3;
@@ -50,6 +49,13 @@ MyInterface.prototype.init = function(application) {
 
 	this.gui.add(this.scene, 'speed', -5, 5);
 
+	/*this.light1.onChange(function(light) {
+		if (light)
+			this.scene.doSomething();
+		else
+			this.scene.doSomething();
+	});*/
+	
 	return true;
 };
 
@@ -67,9 +73,15 @@ MyInterface.prototype.processKeyboard = function(event) {
 	// for better cross-browser support, you may also check suggestions on using event.which in http://www.w3schools.com/jsref/event_key_keycode.asp
 	switch (event.keyCode)
 	{
+<<<<<<< HEAD
 		case (87):
 		case (119):     // any 'W'
 			this.scene.robot.accelerate(this.scene.robot.defaultAcceleration);
+=======
+		case (65):
+			console.log("Key 'A' pressed");
+		this.scene.doSomething();
+>>>>>>> branch 'master' of https://github.com/gtugablue/CGRA-Projeto-Final.git
 			break;
 		case (83):
 		case (115):     // any 'S'
