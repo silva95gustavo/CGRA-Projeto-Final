@@ -31,8 +31,8 @@ LightingScene.prototype.init = function(application) {
 	this.axis = new CGFaxis(this);
 
 	// Interface variables
-	this.option1=true;
-	this.option2=false;
+	this.centerLight=true;
+	this.windowLight=true;
 	this.speed=3;	
 
 	// Scene elements
@@ -135,7 +135,7 @@ LightingScene.prototype.initLights = function() {
 
 	this.shader.bind();
 	
-	// Lamp light
+	// Center light
 	this.lights[0].setPosition(7.5, 7.5, 8, 1);
 	this.lights[0].setAmbient(0, 0, 0, 1);
 	this.lights[0].setDiffuse(0.8, 0.8, 0.8, 1);
@@ -158,7 +158,16 @@ LightingScene.prototype.updateLights = function() {
 }
 
 LightingScene.prototype.update = function(currTime) {
-		this.clock.update(currTime);
+	this.clock.update(currTime);
+	if (this.centerLight)
+		this.lights[0].enable();
+	else
+		this.lights[0].disable();
+	
+	if (this.windowLight)
+		this.lights[1].enable();
+	else
+		this.lights[1].disable();
 }
 
 

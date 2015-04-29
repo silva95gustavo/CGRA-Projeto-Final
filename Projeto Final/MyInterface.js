@@ -34,14 +34,14 @@ MyInterface.prototype.init = function(application) {
 
 	// add a group of controls (and open/expand by defult)
 	
-	var group=this.gui.addFolder("Options");
+	var group=this.gui.addFolder("Luzes");
 	group.open();
 
 	// add two check boxes to the group. The identifiers must be members variables of the scene initialized in scene.init as boolean
 	// e.g. this.option1=true; this.option2=false;
 	
-	group.add(this.scene, 'option1');
-	group.add(this.scene, 'option2');
+	this.light1 = group.add(this.scene, 'centerLight');
+	this.light2 = group.add(this.scene, 'windowLight');
 	
 	// add a slider
 	// must be a numeric variable of the scene, initialized in scene.init e.g.
@@ -50,6 +50,13 @@ MyInterface.prototype.init = function(application) {
 	
 	this.gui.add(this.scene, 'speed', -5, 5);
 
+	/*this.light1.onChange(function(light) {
+		if (light)
+			this.scene.doSomething();
+		else
+			this.scene.doSomething();
+	});*/
+	
 	return true;
 };
 
@@ -69,6 +76,7 @@ MyInterface.prototype.processKeyboard = function(event) {
 	{
 		case (65):
 			console.log("Key 'A' pressed");
+		this.scene.doSomething();
 			break;
 		
 	};
