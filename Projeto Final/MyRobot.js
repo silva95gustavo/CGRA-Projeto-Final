@@ -86,3 +86,8 @@ MyRobot.prototype.applyTransforms = function() {
 	if(Math.abs(this.speed) <= VELOCITY_LIMIT)
 		this.speed = 0;
  };
+ 
+ MyRobot.prototype.display = function() {
+	 this.applyTransforms();
+	 this.drawElements(this.primitiveType);
+ }

@@ -335,7 +335,6 @@ LightingScene.prototype.display = function() {
 
 	// Robot
 	this.pushMatrix();
-		this.robot.applyTransforms();
 		this.robot.display();
 	this.popMatrix();
 
