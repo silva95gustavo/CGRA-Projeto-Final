@@ -31,18 +31,23 @@ var ANGLE_LIMIT = 0.1;
 	
  	this.initBuffers();
  	
- 	this.objectSlices = 30;
+ 	this.objectSlices = 50;
+ 	this.objectStacks = 40;
  	
- 	this.body = new MyRobotBody(this.scene, this.objectSlices, 1);
+ 	this.body = new MyRobotBody(this.scene, this.objectSlices, this.objectStacks);
  	this.bodyDiameterScale = 1.5;
  	this.bodyHeightScale = 3.5;
  	
- 	this.head = new MyRobotHead(this.scene, this.objectSlices, 20);
+ 	this.head = new MyRobotHead(this.scene, this.objectSlices, this.objectStacks);
  	
- 	this.leftArm = new MyRobotArm(this.scene, this.objectSlices, 1); 	
- 	this.rightArm = new MyRobotArm(this.scene, this.objectSlices, 1);
- 	this.armDiameterScale = 0.2;
+ 	this.leftArm = new MyRobotArm(this.scene, this.objectSlices, this.objectStacks); 	
+ 	this.rightArm = new MyRobotArm(this.scene, this.objectSlices, this.objectStacks);
+ 	this.armDiameterScale = 0.3;
  	this.armHeightScale = 2;
+ 	this.armToBodySpacing = this.armDiameterScale + this.bodyDiameterScale + 0.075;
+ 	
+ 	this.armEnd = new MyRobotArmEnd(this.scene, this.objectSlices, this.objectStacks);
+ 	this.armEndHeightScale = 1;
  };
 
  MyRobot.prototype = Object.create(CGFobject.prototype);
@@ -116,22 +121,42 @@ var ANGLE_LIMIT = 0.1;
 	 
 	 // Left arm
 	 this.scene.pushMatrix();
-	 	this.scene.translate((this.armDiameterScale + this.bodyDiameterScale)*Math.cos(-this.angle), 0, (this.armDiameterScale + this.bodyDiameterScale)*Math.sin(-this.angle));
+	 	this.scene.translate(this.armToBodySpacing*Math.cos(-this.angle), 0, this.armToBodySpacing*Math.sin(-this.angle));
 	 	this.scene.translate(this.x, this.y+this.bodyHeightScale-this.armHeightScale, this.z);
-	 	this.scene.rotate(this.angle, 0, 1, 0);
+	 	//this.scene.rotate(this.angle, 0, 1, 0);
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
 	 	this.scene.scale(this.armDiameterScale, this.armDiameterScale, this.armHeightScale);
 	 	this.leftArm.display();
+	 	this.scene.pushMatrix();
+ 			this.scene.rotate(Math.PI, 1, 0, 0);
+ 			this.scene.scale(1, 1, this.armDiameterScale/this.armHeightScale);
+ 			this.armEnd.display();
+ 		this.scene.popMatrix();
+ 		this.scene.pushMatrix();
+ 			this.scene.translate(0, 0, 1);
+ 			this.scene.scale(1, 1, this.armDiameterScale/this.armHeightScale);
+ 			this.armEnd.display();
+ 		this.scene.popMatrix();
 	 this.scene.popMatrix();
 	 
 	 // Right arm
 	 this.scene.pushMatrix();
-	 	this.scene.translate((this.armDiameterScale + this.bodyDiameterScale)*Math.cos(-this.angle + Math.PI), 0, (this.armDiameterScale + this.bodyDiameterScale)*Math.sin(-this.angle + Math.PI));
+	 	this.scene.translate(this.armToBodySpacing*Math.cos(-this.angle + Math.PI), 0, this.armToBodySpacing*Math.sin(-this.angle + Math.PI));
 	 	this.scene.translate(this.x, this.y+this.bodyHeightScale-this.armHeightScale, this.z);
-	 	this.scene.rotate(this.angle, 0, 1, 0);
+	 	//this.scene.rotate(this.angle, 0, 1, 0);
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
 	 	this.scene.scale(this.armDiameterScale, this.armDiameterScale, this.armHeightScale);
 	 	this.leftArm.display();
+	 	this.scene.pushMatrix();
+	 		this.scene.rotate(Math.PI, 1, 0, 0);
+	 		this.scene.scale(1, 1, this.armDiameterScale/this.armHeightScale);
+	 		this.armEnd.display();
+	 	this.scene.popMatrix();
+	 	this.scene.pushMatrix();
+	 		this.scene.translate(0, 0, 1);
+	 		this.scene.scale(1, 1, this.armDiameterScale/this.armHeightScale);
+	 		this.armEnd.display();
+	 	this.scene.popMatrix();
 	 this.scene.popMatrix();
 	 
 
