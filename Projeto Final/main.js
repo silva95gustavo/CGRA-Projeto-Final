@@ -23,6 +23,7 @@ serialInclude([
 	'MyRobotHead.js',
 	'MyRobotArm.js',
 	'MyRobotArmEnd.js',
+	'MyRobotAntenna.js',
 
 	main=function() {
 		var app = new CGFapplication(document.body);

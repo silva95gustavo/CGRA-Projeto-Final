@@ -48,21 +48,29 @@ var ANGLE_LIMIT = 0.1;
  	
  	this.armEnd = new MyRobotArmEnd(this.scene, this.objectSlices, this.objectStacks);
  	this.armEndHeightScale = 1;
+ 	
+ 	this.antenna = new MyRobotAntenna(this.scene, this.objectSlices, this.objectStacks);
+ 	this.antennaDiameterScale = 0.05;
+ 	this.antennaHeightScale = 1.4;
+ 	this.antennaLeanAngle = Math.PI/7;
  };
 
  MyRobot.prototype = Object.create(CGFobject.prototype);
  MyRobot.prototype.constructor = MyRobot;
 
  MyRobot.prototype.initBuffers = function() {
+	 
+	 this.vertices = [];
+	 this.indices = [];
  
- 	this.vertices = [0.5, 0.3, 0,
+ 	/*this.vertices = [0.5, 0.3, 0,
  	                 -0.5, 0.3, 0,
  	                 0, 0.3, 2
  	                 ];
 
  	this.indices = [0, 1, 2];
  	
- 	//this.normals = [];
+ 	//this.normals = [];*/
 
  	this.primitiveType = this.scene.gl.TRIANGLES;
  	this.initGLBuffers();
@@ -112,11 +120,35 @@ var ANGLE_LIMIT = 0.1;
 	 
 	 // Robot head
 	 this.scene.pushMatrix();
-	 	this.scene.translate(this.x, this.y+this.bodyHeightScale, this.z);
+	 	this.scene.translate(this.x, this.y+this.bodyHeightScale+0.14, this.z);
 	 	this.scene.rotate(this.angle, 0, 1, 0);
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
 	 	this.scene.scale(this.bodyDiameterScale, this.bodyDiameterScale, this.bodyDiameterScale);
 	 	this.head.display();
+	 	this.scene.pushMatrix();
+	 		this.scene.rotate(this.antennaLeanAngle, 0, 1, 0);
+	 		this.scene.scale(this.antennaDiameterScale, this.antennaDiameterScale, this.antennaHeightScale);
+	 		this.antenna.display();
+	 	this.scene.popMatrix();
+	 	this.scene.pushMatrix();
+ 			this.scene.rotate(-this.antennaLeanAngle, 0, 1, 0);
+ 			this.scene.scale(this.antennaDiameterScale, this.antennaDiameterScale, this.antennaHeightScale);
+ 			this.antenna.display();
+ 		this.scene.popMatrix();
+ 		this.scene.pushMatrix();
+			this.scene.rotate(-this.antennaLeanAngle, 0, 1, 0);
+			this.scene.translate(0, 0, this.antennaHeightScale);
+			this.scene.rotate(Math.PI/2, 0, 0, 1);
+			this.scene.scale(this.antennaDiameterScale, this.antennaDiameterScale, this.antennaDiameterScale);
+			this.armEnd.display();
+		this.scene.popMatrix();
+ 		this.scene.pushMatrix();
+		this.scene.rotate(this.antennaLeanAngle, 0, 1, 0);
+		this.scene.translate(0, 0, this.antennaHeightScale);
+		this.scene.rotate(Math.PI/2, 0, 0, 1);
+		this.scene.scale(this.antennaDiameterScale, this.antennaDiameterScale, this.antennaDiameterScale);
+		this.armEnd.display();
+	this.scene.popMatrix();
 	 this.scene.popMatrix();
 	 
 	 // Left arm
