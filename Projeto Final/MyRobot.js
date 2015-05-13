@@ -31,9 +31,13 @@ var ANGLE_LIMIT = 0.1;
 	
  	this.initBuffers();
  	
- 	this.body = new MyRobotBody(this.scene, 30, 1);
+ 	this.objectSlices = 30;
+ 	
+ 	this.body = new MyRobotBody(this.scene, this.objectSlices, 1);
  	this.bodyDiameterScale = 1.5;
  	this.bodyHeightScale = 3.5;
+ 	
+ 	this.head = new MyHalfSphere(this.scene, this.objectSlices, 20);
  };
 
  MyRobot.prototype = Object.create(CGFobject.prototype);
@@ -87,16 +91,27 @@ var ANGLE_LIMIT = 0.1;
  
  MyRobot.prototype.display = function() {
 	 
+	 // Main robot body
 	 this.scene.pushMatrix();
-	 this.scene.translate(this.x, this.y, this.z);
-	 this.scene.rotate(this.angle, 0, 1, 0);
-	 this.scene.rotate(-Math.PI/2, 1, 0, 0);
-	 this.scene.scale(this.bodyDiameterScale, this.bodyDiameterScale, this.bodyHeightScale);
-	 this.body.display();
+	 	this.scene.translate(this.x, this.y, this.z);
+	 	this.scene.rotate(this.angle, 0, 1, 0);
+	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
+	 	this.scene.scale(this.bodyDiameterScale, this.bodyDiameterScale, this.bodyHeightScale);
+	 	this.body.display();
 	 this.scene.popMatrix();
+	 
+	 // Robot head
+	 this.scene.pushMatrix();
+	 	this.scene.translate(this.x, this.y+this.bodyHeightScale, this.z);
+	 	this.scene.rotate(this.angle, 0, 1, 0);
+	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
+	 	this.scene.scale(this.bodyDiameterScale, this.bodyDiameterScale, 1);
+	 	this.head.display();
+	 this.scene.popMatrix();
+	 
+	 
 
 	 this.scene.translate(this.x, this.y, this.z);
 	 this.scene.rotate(this.angle, 0, 1, 0);
-
 	 this.drawElements(this.primitiveType);
  }

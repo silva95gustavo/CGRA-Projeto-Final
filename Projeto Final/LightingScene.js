@@ -52,7 +52,7 @@ LightingScene.prototype.init = function(application) {
 	// Robot variables
 	this.robot = new MyRobot(this);
 	this.robot.x = 7.5;
-	this.robot.y = 4;
+	this.robot.y = 0;
 	this.robot.z = 7.5;
 	this.robot.resistance = this.robot.defaultResistance;
 	this.robot.angle = 210*degToRad;
