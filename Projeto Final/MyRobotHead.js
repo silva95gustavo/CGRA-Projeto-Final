@@ -1,8 +1,8 @@
 /**
- * MyHalfSphere
+ * MyRobotHead
  * @constructor
  */
- function MyHalfSphere(scene, slices, stacks) {
+ function MyRobotHead(scene, slices, stacks) {
  	CGFobject.call(this,scene);
 	
 	this.slices=slices;
@@ -11,10 +11,10 @@
  	this.initBuffers();
  };
 
- MyHalfSphere.prototype = Object.create(CGFobject.prototype);
- MyHalfSphere.prototype.constructor = MyHalfSphere;
+ MyRobotHead.prototype = Object.create(CGFobject.prototype);
+ MyRobotHead.prototype.constructor = MyRobotHead;
 
- MyHalfSphere.prototype.initBuffers = function() {
+ MyRobotHead.prototype.initBuffers = function() {
  	
 	var ang = Math.PI*2/this.slices;
  	var alfa = 0;

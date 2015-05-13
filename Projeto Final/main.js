@@ -20,7 +20,8 @@ serialInclude([
 	'MyInterface.js',
 	'MyRobot.js',
 	'MyRobotBody.js',
-	'MyHalfSphere.js',
+	'MyRobotHead.js',
+	'MyRobotArm.js',
 
 	main=function() {
 		var app = new CGFapplication(document.body);

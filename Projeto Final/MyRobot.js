@@ -37,7 +37,12 @@ var ANGLE_LIMIT = 0.1;
  	this.bodyDiameterScale = 1.5;
  	this.bodyHeightScale = 3.5;
  	
- 	this.head = new MyHalfSphere(this.scene, this.objectSlices, 20);
+ 	this.head = new MyRobotHead(this.scene, this.objectSlices, 20);
+ 	
+ 	this.leftArm = new MyRobotArm(this.scene, this.objectSlices, 1); 	
+ 	this.rightArm = new MyRobotArm(this.scene, this.objectSlices, 1);
+ 	this.armDiameterScale = 0.2;
+ 	this.armHeightScale = 2;
  };
 
  MyRobot.prototype = Object.create(CGFobject.prototype);
@@ -105,10 +110,29 @@ var ANGLE_LIMIT = 0.1;
 	 	this.scene.translate(this.x, this.y+this.bodyHeightScale, this.z);
 	 	this.scene.rotate(this.angle, 0, 1, 0);
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
-	 	this.scene.scale(this.bodyDiameterScale, this.bodyDiameterScale, 1);
+	 	this.scene.scale(this.bodyDiameterScale, this.bodyDiameterScale, this.bodyDiameterScale);
 	 	this.head.display();
 	 this.scene.popMatrix();
 	 
+	 // Left arm
+	 this.scene.pushMatrix();
+	 	this.scene.translate((this.armDiameterScale + this.bodyDiameterScale)*Math.cos(-this.angle), 0, (this.armDiameterScale + this.bodyDiameterScale)*Math.sin(-this.angle));
+	 	this.scene.translate(this.x, this.y+this.bodyHeightScale-this.armHeightScale, this.z);
+	 	this.scene.rotate(this.angle, 0, 1, 0);
+	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
+	 	this.scene.scale(this.armDiameterScale, this.armDiameterScale, this.armHeightScale);
+	 	this.leftArm.display();
+	 this.scene.popMatrix();
+	 
+	 // Right arm
+	 this.scene.pushMatrix();
+	 	this.scene.translate((this.armDiameterScale + this.bodyDiameterScale)*Math.cos(-this.angle + Math.PI), 0, (this.armDiameterScale + this.bodyDiameterScale)*Math.sin(-this.angle + Math.PI));
+	 	this.scene.translate(this.x, this.y+this.bodyHeightScale-this.armHeightScale, this.z);
+	 	this.scene.rotate(this.angle, 0, 1, 0);
+	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
+	 	this.scene.scale(this.armDiameterScale, this.armDiameterScale, this.armHeightScale);
+	 	this.leftArm.display();
+	 this.scene.popMatrix();
 	 
 
 	 this.scene.translate(this.x, this.y, this.z);
