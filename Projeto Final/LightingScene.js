@@ -31,13 +31,14 @@ LightingScene.prototype.init = function(application) {
 	this.axis = new CGFaxis(this);
 
 	// Interface variables
-	this.centerLight=true;
-	this.windowLight=true;
-	this.speed=3;	
+	this.centerLight = true;
+	this.windowLight = true;
+	this.clockActive = true;
 
 	// Scene elements
 	this.table = new MyTable(this);
 	this.floor = new MyQuad(this, 0, 10, 0, 12);
+	this.landscape = new MyQuad(this, 0, 1, 0, 1);
 	this.leftWall = new MyQuad(this, -0.75, 1.75, -0.25, 1.25);
 	this.wall = new Plane(this);
 	this.boardA = new Plane(this, BOARD_A_DIVISIONS, -0.25, 1.25, 0, 1);
@@ -72,6 +73,14 @@ LightingScene.prototype.init = function(application) {
 	this.windowAppearance.setShininess(2);
 	this.windowAppearance.loadTexture("resources/images/window.png");
 	this.windowAppearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
+	
+	this.landscapeAppearance = new CGFappearance(this);
+	this.landscapeAppearance.setAmbient(1, 1, 1, 1);
+	this.landscapeAppearance.setDiffuse(1, 1, 1, 1);
+	this.landscapeAppearance.setSpecular(0, 0, 0, 1);
+	this.landscapeAppearance.setShininess(1);
+	this.landscapeAppearance.loadTexture("resources/images/landscape.jpg");
+	this.landscapeAppearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
 
 	// Wall is a combination of the wall texture and the blue color
 	this.materialWall = new CGFappearance(this);
@@ -161,6 +170,7 @@ LightingScene.prototype.updateLights = function() {
 
 LightingScene.prototype.update = function(currTime) {
 
+	if (this.clockActive)
 		this.clock.update(currTime);
 		
 		if(this.prevTime == 0)
@@ -223,6 +233,15 @@ LightingScene.prototype.display = function() {
 		this.scale(15, 15, 0.2);
 		this.floorAppearance.apply();
 		this.floor.display();
+	this.popMatrix();
+	
+	// Landscape
+	this.pushMatrix();
+		this.translate(-3, 4, 7.5);
+		this.rotate(90 * degToRad, 0, 1, 0);
+		this.scale(15 * 1.5, 8 * 1.5, 1);
+		this.landscapeAppearance.apply();
+		this.landscape.display();
 	this.popMatrix();
 
 	// Left Wall
