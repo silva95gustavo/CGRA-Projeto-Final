@@ -30,6 +30,10 @@ var ANGLE_LIMIT = 0.1;
  	this.angleResistance = 0;
 	
  	this.initBuffers();
+ 	
+ 	this.body = new MyRobotBody(this.scene, 30, 1);
+ 	this.bodyDiameterScale = 1.5;
+ 	this.bodyHeightScale = 3.5;
  };
 
  MyRobot.prototype = Object.create(CGFobject.prototype);
@@ -48,12 +52,6 @@ var ANGLE_LIMIT = 0.1;
 
  	this.primitiveType = this.scene.gl.TRIANGLES;
  	this.initGLBuffers();
- };
-
-MyRobot.prototype.applyTransforms = function() {
- 	this.scene.translate(this.x, this.y, this.z);
- 	this.scene.rotate(this.angle, 0, 1, 0);
-
  };
 
  MyRobot.prototype.move = function(delta) {
@@ -88,6 +86,17 @@ MyRobot.prototype.applyTransforms = function() {
  };
  
  MyRobot.prototype.display = function() {
-	 this.applyTransforms();
+	 
+	 this.scene.pushMatrix();
+	 this.scene.translate(this.x, this.y, this.z);
+	 this.scene.rotate(this.angle, 0, 1, 0);
+	 this.scene.rotate(-Math.PI/2, 1, 0, 0);
+	 this.scene.scale(this.bodyDiameterScale, this.bodyDiameterScale, this.bodyHeightScale);
+	 this.body.display();
+	 this.scene.popMatrix();
+
+	 this.scene.translate(this.x, this.y, this.z);
+	 this.scene.rotate(this.angle, 0, 1, 0);
+
 	 this.drawElements(this.primitiveType);
  }

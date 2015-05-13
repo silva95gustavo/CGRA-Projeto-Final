@@ -19,6 +19,8 @@ serialInclude([
 	'MyAirplane.js',
 	'MyInterface.js',
 	'MyRobot.js',
+	'MyRobotBody.js',
+	'MyHalfSphere.js',
 
 	main=function() {
 		var app = new CGFapplication(document.body);
