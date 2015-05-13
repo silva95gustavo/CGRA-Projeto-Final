@@ -124,6 +124,7 @@ var ANGLE_LIMIT = 0.1;
 	 	this.scene.translate(this.armToBodySpacing*Math.cos(-this.angle), 0, this.armToBodySpacing*Math.sin(-this.angle));
 	 	this.scene.translate(this.x, this.y+this.bodyHeightScale-this.armHeightScale, this.z);
 	 	//this.scene.rotate(this.angle, 0, 1, 0);
+	 	//this.scene.rotate(Math.PI/2, 1, 0, 0);  THIS IS WHERE THE ARM MOVEMENT ROTATION WILL GO
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
 	 	this.scene.scale(this.armDiameterScale, this.armDiameterScale, this.armHeightScale);
 	 	this.leftArm.display();
@@ -144,6 +145,7 @@ var ANGLE_LIMIT = 0.1;
 	 	this.scene.translate(this.armToBodySpacing*Math.cos(-this.angle + Math.PI), 0, this.armToBodySpacing*Math.sin(-this.angle + Math.PI));
 	 	this.scene.translate(this.x, this.y+this.bodyHeightScale-this.armHeightScale, this.z);
 	 	//this.scene.rotate(this.angle, 0, 1, 0);
+	 	//this.scene.rotate(Math.PI/2, 1, 0, 0);  THIS IS WHERE THE ARM MOVEMENT ROTATION WILL GO
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
 	 	this.scene.scale(this.armDiameterScale, this.armDiameterScale, this.armHeightScale);
 	 	this.leftArm.display();
