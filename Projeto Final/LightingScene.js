@@ -58,6 +58,14 @@ LightingScene.prototype.init = function(application) {
 	this.robot.angle = 210*degToRad;
 	this.robot.angleResistance = this.robot.defaultAngleResistance;
 
+	this.robotAppearance = new CGFappearance(this);
+	this.robotAppearance.setAmbient(102/255/1.3, 1/1.3, 0);
+	this.robotAppearance.setDiffuse(102/255/1.3, 1/1.3, 0);
+	this.robotAppearance.setSpecular(102/255, 1, 0);
+	this.robotAppearance.setShininess(400);
+	this.robotAppearance.loadTexture("resources/images/green.png");
+	this.robotAppearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
+
 	// For plane animation
 	this.prevTime = 0;
 	this.airplaneX = 3.5;
@@ -354,6 +362,7 @@ LightingScene.prototype.display = function() {
 
 	// Robot
 	this.pushMatrix();
+	this.robotAppearance.apply();
 		this.robot.display();
 	this.popMatrix();
 

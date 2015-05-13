@@ -31,8 +31,8 @@ var ANGLE_LIMIT = 0.1;
 	
  	this.initBuffers();
  	
- 	this.objectSlices = 50;
- 	this.objectStacks = 40;
+ 	this.objectSlices = 300;
+ 	this.objectStacks = 60;
  	
  	this.body = new MyRobotBody(this.scene, this.objectSlices, this.objectStacks);
  	this.bodyDiameterScale = 1.5;
