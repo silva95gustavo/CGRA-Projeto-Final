@@ -31,9 +31,9 @@ LightingScene.prototype.init = function(application) {
 	this.axis = new CGFaxis(this);
 
 	// Interface variables
-	this.centerLight=true;
-	this.windowLight=true;
-	this.speed=3;	
+	this.centerLight = true;
+	this.windowLight = true;
+	this.clockActive = true;
 
 	// Scene elements
 	this.table = new MyTable(this);
