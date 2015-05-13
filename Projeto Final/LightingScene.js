@@ -161,6 +161,7 @@ LightingScene.prototype.updateLights = function() {
 
 LightingScene.prototype.update = function(currTime) {
 
+	if (this.clockActive)
 		this.clock.update(currTime);
 		
 		if(this.prevTime == 0)
