@@ -52,7 +52,7 @@ LightingScene.prototype.init = function(application) {
 	// Robot variables
 	this.robot = new MyRobot(this);
 	this.robot.x = 7.5;
-	this.robot.y = 4;
+	this.robot.y = 4.5;
 	this.robot.z = 7.5;
 	this.robot.resistance = this.robot.defaultResistance;
 	this.robot.angle = 210*degToRad;
@@ -70,6 +70,13 @@ LightingScene.prototype.init = function(application) {
 	this.robotEyeAppearance.setDiffuse(0, 0, 0);
 	this.robotEyeAppearance.setSpecular(0.2, 0.2, 0.2);
 	this.robotEyeAppearance.setShininess(10);
+	this.robotWheelAppearance = new CGFappearance(this);
+	this.robotWheelAppearance.setAmbient(0.4, 0.4, 0.4);
+	this.robotWheelAppearance.setDiffuse(0.6, 0.6, 0.6);
+	this.robotWheelAppearance.setSpecular(0.2, 0.2, 0.2);
+	this.robotWheelAppearance.setShininess(10);
+	this.robotWheelAppearance.loadTexture("resources/images/wheel.png");
+	this.robotWheelAppearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
 
 	// For plane animation
 	this.prevTime = 0;
@@ -374,6 +381,8 @@ LightingScene.prototype.display = function() {
 		this.robot.displayHead();
 		this.robotEyeAppearance.apply();
 		this.robot.displayEyes();
+		this.robotWheelAppearance.apply();
+		this.robot.displayWheels();
 		//this.robot.display();
 	this.popMatrix();
 

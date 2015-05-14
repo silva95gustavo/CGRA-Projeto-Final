@@ -21,6 +21,7 @@ serialInclude([
 	'MyHalfSphere.js',
 	'MyCylinderTopped.js',
 	'MyRobot.js',
+	'MyRobotWheel.js',
 
 	main=function() {
 		var app = new CGFapplication(document.body);
