@@ -58,13 +58,18 @@ LightingScene.prototype.init = function(application) {
 	this.robot.angle = 210*degToRad;
 	this.robot.angleResistance = this.robot.defaultAngleResistance;
 
-	this.robotAppearance = new CGFappearance(this);
-	this.robotAppearance.setAmbient(102/255/1.3, 1/1.3, 0);
-	this.robotAppearance.setDiffuse(102/255/1.3, 1/1.3, 0);
-	this.robotAppearance.setSpecular(102/255, 1, 0);
-	this.robotAppearance.setShininess(400);
-	//this.robotAppearance.loadTexture("resources/images/green.png");
-	//this.robotAppearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
+	this.robotGeneralAppearance = new CGFappearance(this);
+	this.robotGeneralAppearance.setAmbient(102/255/1.3, 1/1.3, 0);
+	this.robotGeneralAppearance.setDiffuse(102/255/1.3, 1/1.3, 0);
+	this.robotGeneralAppearance.setSpecular(102/255, 1, 0);
+	this.robotGeneralAppearance.setShininess(400);
+	//this.robotGeneralAppearance.loadTexture("resources/images/green.png");
+	//this.robotGeneralAppearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
+	this.robotEyeAppearance = new CGFappearance(this);
+	this.robotEyeAppearance.setAmbient(0, 0, 0);
+	this.robotEyeAppearance.setDiffuse(0, 0, 0);
+	this.robotEyeAppearance.setSpecular(0.2, 0.2, 0.2);
+	this.robotEyeAppearance.setShininess(10);
 
 	// For plane animation
 	this.prevTime = 0;
@@ -362,8 +367,14 @@ LightingScene.prototype.display = function() {
 
 	// Robot
 	this.pushMatrix();
-		this.robotAppearance.apply();
-		this.robot.display();
+		//this.robot.updateTextures();
+		this.robotGeneralAppearance.apply();
+		this.robot.displayBody();
+		this.robot.displayArms();
+		this.robot.displayHead();
+		this.robotEyeAppearance.apply();
+		this.robot.displayEyes();
+		//this.robot.display();
 	this.popMatrix();
 
 	// ---- END Primitive drawing section
@@ -405,4 +416,4 @@ LightingScene.prototype.animatePlane = function(currTime) {
 
 		}
 	}	
-}	
+};

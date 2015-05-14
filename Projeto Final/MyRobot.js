@@ -57,9 +57,29 @@ var ANGLE_LIMIT = 0.1;
  	
  	//this.antenna = new MyCylinderTopped(this.scene, this.objectSlices, this.objectStacks);
  	this.antennaDiameterScale = this.bodyDiameterScale/20;
- 	this.antennaHeightScale = this.bodyDiameterScale*1.45//1.25;
+ 	this.antennaHeightScale = this.bodyDiameterScale*1.4//1.25;
  	this.antennaLeanAngle = Math.PI/7;
  	this.antennaHeightAdjustment = Math.cos(this.antennaLeanAngle)*this.antennaDiameterScale;
+ 	
+ 	this.eyeDiameterScale = 0.1*this.bodyDiameterScale;
+ 	this.eyeDepthScale = 0.84*this.bodyDiameterScale;
+ 	this.eyeHeightScale = (0.5)*this.bodyDiameterScale;
+ 	this.eyeToEyeDistance = (0.45)*this.bodyDiameterScale;
+ 	
+ 	this.wheelDiameterScale = this.bodyDiameterScale;
+ 	
+	/*this.defaultAppearance = new CGFappearance(this);
+	this.defaultAppearance.setAmbient(102/255/1.3, 1/1.3, 0);
+	this.defaultAppearance.setDiffuse(102/255/1.3, 1/1.3, 0);
+	this.defaultAppearance.setSpecular(102/255, 1, 0);
+	this.defaultAppearance.setShininess(400);
+	//this.defaultAppearance.loadTexture("resources/images/green.png");
+	//this.defaultAppearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
+	this.defaultEyeAppearance = new CGFappearance(this);
+	this.defaultEyeAppearance.setAmbient(0, 0, 0);
+	this.defaultEyeAppearance.setDiffuse(0, 0, 0);
+	this.defaultEyeAppearance.setSpecular(0.2, 0.2, 0.2);
+	this.defaultEyeAppearance.setShininess(10);*/
  };
 
  MyRobot.prototype = Object.create(CGFobject.prototype);
@@ -105,8 +125,8 @@ var ANGLE_LIMIT = 0.1;
 	if(Math.abs(this.angleSpeed) <= ANGLE_LIMIT)
 		this.angleSpeed = 0;
 
- 	this.x += this.speed * delta_t/1000 * Math.sin(this.angle);
- 	this.z += this.speed * delta_t/1000 * Math.cos(this.angle);
+ 	this.x += this.speed * delta_t/1000 * Math.sin(this.angle) * this.sizeScale;
+ 	this.z += this.speed * delta_t/1000 * Math.cos(this.angle) * this.sizeScale;
 	
 	this.speed -= this.speed * delta_t/1000 * this.resistance;
 
@@ -114,9 +134,8 @@ var ANGLE_LIMIT = 0.1;
 		this.speed = 0;
  };
  
- MyRobot.prototype.display = function() {
-	 
-	 // Main robot body
+ MyRobot.prototype.displayBody = function() {
+
 	 this.scene.pushMatrix();
 	 	this.scene.translate(this.x, this.y, this.z);
 	 	this.scene.rotate(this.angle, 0, 1, 0);
@@ -125,47 +144,54 @@ var ANGLE_LIMIT = 0.1;
 	 	this.cylinder.display();
 	 	//this.body.display();
 	 this.scene.popMatrix();
-	 
-	 // Robot head
+ };
+ 
+MyRobot.prototype.displayHead = function() {
+
 	 this.scene.pushMatrix();
 	 	this.scene.translate(this.x, this.y+this.bodyHeightScale+this.headToBodySpacing, this.z);
 	 	this.scene.rotate(this.angle, 0, 1, 0);
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
-	 	this.scene.scale(this.bodyDiameterScale, this.bodyDiameterScale, this.bodyDiameterScale);
-	 	this.hsphere.display();
+	 	this.scene.pushMatrix();
+	 		this.scene.scale(this.bodyDiameterScale, this.bodyDiameterScale, this.bodyDiameterScale);
+	 		this.hsphere.display();
+	 	this.scene.popMatrix();
 	 	//this.head.display();
 	 	this.scene.pushMatrix();
 	 		this.scene.rotate(this.antennaLeanAngle, 0, 1, 0);
- 			this.scene.translate(0, 0, this.antennaHeightAdjustment);
-	 		this.scene.scale(this.antennaDiameterScale/this.bodyDiameterScale, this.antennaDiameterScale/this.bodyDiameterScale, this.antennaHeightScale/this.bodyDiameterScale);
+			this.scene.translate(0, 0, this.antennaHeightAdjustment);
+	 		this.scene.scale(this.antennaDiameterScale, this.antennaDiameterScale, this.antennaHeightScale);
 	 		this.cylinder.display();
 	 		//this.antenna.display();
 	 	this.scene.popMatrix();
 	 	this.scene.pushMatrix();
- 			this.scene.rotate(-this.antennaLeanAngle, 0, 1, 0);
- 			this.scene.translate(0, 0, this.antennaHeightAdjustment);
- 			this.scene.scale(this.antennaDiameterScale/this.bodyDiameterScale, this.antennaDiameterScale/this.bodyDiameterScale, this.antennaHeightScale/this.bodyDiameterScale);
+			this.scene.rotate(-this.antennaLeanAngle, 0, 1, 0);
+			this.scene.translate(0, 0, this.antennaHeightAdjustment);
+			this.scene.scale(this.antennaDiameterScale, this.antennaDiameterScale, this.antennaHeightScale);
 	 		this.cylinder.display();
 	 		//this.antenna.display();
- 		this.scene.popMatrix();
- 		this.scene.pushMatrix();
+		this.scene.popMatrix();
+		this.scene.pushMatrix();
 			this.scene.rotate(-this.antennaLeanAngle, 0, 1, 0);
-			this.scene.translate(0, 0, this.antennaHeightScale/this.bodyDiameterScale + this.antennaHeightAdjustment);
+			this.scene.translate(0, 0, this.antennaHeightScale + this.antennaHeightAdjustment);
 			this.scene.rotate(Math.PI/2, 0, 0, 1);
-			this.scene.scale(this.antennaDiameterScale/this.bodyDiameterScale, this.antennaDiameterScale/this.bodyDiameterScale, this.antennaDiameterScale/this.bodyDiameterScale);
+			this.scene.scale(this.antennaDiameterScale, this.antennaDiameterScale, this.antennaDiameterScale);
 	 		this.hsphere.display();
 	 		//this.armEnd.display();
 		this.scene.popMatrix();
- 		this.scene.pushMatrix();
- 			this.scene.rotate(this.antennaLeanAngle, 0, 1, 0);
- 			this.scene.translate(0, 0, this.antennaHeightScale/this.bodyDiameterScale + this.antennaHeightAdjustment);
- 			this.scene.rotate(Math.PI/2, 0, 0, 1);
- 			this.scene.scale(this.antennaDiameterScale/this.bodyDiameterScale, this.antennaDiameterScale/this.bodyDiameterScale, this.antennaDiameterScale/this.bodyDiameterScale);
+		this.scene.pushMatrix();
+			this.scene.rotate(this.antennaLeanAngle, 0, 1, 0);
+			this.scene.translate(0, 0, this.antennaHeightScale + this.antennaHeightAdjustment);
+			this.scene.rotate(Math.PI/2, 0, 0, 1);
+			this.scene.scale(this.antennaDiameterScale, this.antennaDiameterScale, this.antennaDiameterScale);
 	 		this.hsphere.display();
 	 		//this.armEnd.display();
- 		this.scene.popMatrix();
+		this.scene.popMatrix();
 	 this.scene.popMatrix();
-	 
+ };
+ 
+MyRobot.prototype.displayArms = function() {
+
 	 // Left arm
 	 this.scene.pushMatrix();
 	 	this.scene.translate(this.armToBodySpacing*Math.cos(-this.angle), 0, this.armToBodySpacing*Math.sin(-this.angle));
@@ -177,17 +203,17 @@ var ANGLE_LIMIT = 0.1;
 	 	this.cylinder.display();
 	 	//this.leftArm.display();
 	 	this.scene.pushMatrix();
- 			this.scene.rotate(Math.PI, 1, 0, 0);
- 			this.scene.scale(1, 1, this.armDiameterScale/this.armHeightScale);
- 			this.hsphere.display();
- 			//this.armEnd.display();
- 		this.scene.popMatrix();
- 		this.scene.pushMatrix();
- 			this.scene.translate(0, 0, 1);
- 			this.scene.scale(1, 1, this.armDiameterScale/this.armHeightScale);
- 			this.hsphere.display();
- 			//this.armEnd.display();
- 		this.scene.popMatrix();
+			this.scene.rotate(Math.PI, 1, 0, 0);
+			this.scene.scale(1, 1, this.armDiameterScale/this.armHeightScale);
+			this.hsphere.display();
+			//this.armEnd.display();
+		this.scene.popMatrix();
+		this.scene.pushMatrix();
+			this.scene.translate(0, 0, 1);
+			this.scene.scale(1, 1, this.armDiameterScale/this.armHeightScale);
+			this.hsphere.display();
+			//this.armEnd.display();
+		this.scene.popMatrix();
 	 this.scene.popMatrix();
 	 
 	 // Right arm
@@ -213,9 +239,45 @@ var ANGLE_LIMIT = 0.1;
 	 		//this.armEnd.display();
 	 	this.scene.popMatrix();
 	 this.scene.popMatrix();
-	 
+ };
+ 
+MyRobot.prototype.displayEyes = function() {
 
-	 this.scene.translate(this.x, this.y, this.z);
-	 this.scene.rotate(this.angle, 0, 1, 0);
+	 this.scene.pushMatrix();
+	 	this.scene.translate(this.x + this.eyeToEyeDistance*Math.cos(-this.angle), this.y+this.bodyHeightScale+this.headToBodySpacing+this.eyeHeightScale, this.z + this.eyeToEyeDistance*Math.sin(-this.angle));
+	 	this.scene.rotate(this.angle, 0, 1, 0);
+	 	this.scene.scale(this.eyeDiameterScale, this.eyeDiameterScale, this.eyeDepthScale);
+	 	this.cylinder.display();
+	 this.scene.popMatrix();
+	 this.scene.pushMatrix();
+	 	this.scene.translate(this.x - this.eyeToEyeDistance*Math.cos(-this.angle), this.y+this.bodyHeightScale+this.headToBodySpacing+this.eyeHeightScale, this.z - this.eyeToEyeDistance*Math.sin(-this.angle));
+	 	this.scene.rotate(this.angle, 0, 1, 0);
+	 	this.scene.scale(this.eyeDiameterScale, this.eyeDiameterScale, this.eyeDepthScale);
+	 	this.cylinder.display();
+	 this.scene.popMatrix();
+ };
+ 
+ MyRobot.prototype.display = function() {
+	 
+	 this.updateTextures();
+	 
+	 //this.scene.robotGeneralAppearance.apply();
+	 
+	 // Main robot body
+	 this.displayBody();
+	 
+	 // Robot head
+	 this.displayHead();
+	 
+	 // Robot arms
+	 this.displayArms();
+	 
+	 //this.scene.robotEyeAppearance.apply();
+	 
+	 // Robot eyes
+	 this.displayEyes();
+	
+	 //this.scene.translate(this.x, this.y, this.z);
+	 //this.scene.rotate(this.angle, 0, 1, 0);
 	 this.drawElements(this.primitiveType);
  }
