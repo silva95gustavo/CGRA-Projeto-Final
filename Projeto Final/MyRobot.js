@@ -150,7 +150,7 @@ var ANGLE_LIMIT = 0.1;
  MyRobot.prototype.displayBody = function() {
 
 	 this.scene.pushMatrix();
-	 	this.scene.translate(this.x, this.y, this.z);
+	 	this.scene.translate(this.x, this.y+this.wheelDiameterScale, this.z);
 	 	this.scene.rotate(this.angle, 0, 1, 0);
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
 	 	this.scene.scale(this.bodyDiameterScale, this.bodyDiameterScale, this.bodyHeightScale);
@@ -162,7 +162,7 @@ var ANGLE_LIMIT = 0.1;
 MyRobot.prototype.displayHead = function() {
 
 	 this.scene.pushMatrix();
-	 	this.scene.translate(this.x, this.y+this.bodyHeightScale+this.headToBodySpacing, this.z);
+	 	this.scene.translate(this.x, this.y+this.bodyHeightScale+this.headToBodySpacing+this.wheelDiameterScale, this.z);
 	 	this.scene.rotate(this.angle, 0, 1, 0);
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
 	 	this.scene.pushMatrix();
@@ -207,7 +207,7 @@ MyRobot.prototype.displayArms = function() {
 
 	 // Left arm
 	 this.scene.pushMatrix();
-	 	this.scene.translate(this.armToBodySpacing*Math.cos(-this.angle), 0, this.armToBodySpacing*Math.sin(-this.angle));
+	 	this.scene.translate(this.armToBodySpacing*Math.cos(-this.angle), this.wheelDiameterScale, this.armToBodySpacing*Math.sin(-this.angle));
 	 	this.scene.translate(this.x, this.y+this.bodyHeightScale-this.armHeightScale, this.z);
 	 	//this.scene.rotate(this.angle, 0, 1, 0);
 	 	//this.scene.rotate(Math.PI/2, 1, 0, 0); // THIS IS WHERE THE ARM MOVEMENT ROTATION WILL GO
@@ -231,7 +231,7 @@ MyRobot.prototype.displayArms = function() {
 	 
 	 // Right arm
 	 this.scene.pushMatrix();
-	 	this.scene.translate(this.armToBodySpacing*Math.cos(-this.angle + Math.PI), 0, this.armToBodySpacing*Math.sin(-this.angle + Math.PI));
+	 	this.scene.translate(this.armToBodySpacing*Math.cos(-this.angle + Math.PI), this.wheelDiameterScale, this.armToBodySpacing*Math.sin(-this.angle + Math.PI));
 	 	this.scene.translate(this.x, this.y+this.bodyHeightScale-this.armHeightScale, this.z);
 	 	//this.scene.rotate(this.angle, 0, 1, 0);
 	 	//this.scene.rotate(Math.PI/2, 1, 0, 0);  THIS IS WHERE THE ARM MOVEMENT ROTATION WILL GO
@@ -257,13 +257,13 @@ MyRobot.prototype.displayArms = function() {
 MyRobot.prototype.displayEyes = function() {
 
 	 this.scene.pushMatrix();
-	 	this.scene.translate(this.x + this.eyeToEyeDistance*Math.cos(-this.angle), this.y+this.bodyHeightScale+this.headToBodySpacing+this.eyeHeightScale, this.z + this.eyeToEyeDistance*Math.sin(-this.angle));
+	 	this.scene.translate(this.x + this.eyeToEyeDistance*Math.cos(-this.angle), this.y+this.bodyHeightScale+this.headToBodySpacing+this.eyeHeightScale+this.wheelDiameterScale, this.z + this.eyeToEyeDistance*Math.sin(-this.angle));
 	 	this.scene.rotate(this.angle, 0, 1, 0);
 	 	this.scene.scale(this.eyeDiameterScale, this.eyeDiameterScale, this.eyeDepthScale);
 	 	this.cylinder.display();
 	 this.scene.popMatrix();
 	 this.scene.pushMatrix();
-	 	this.scene.translate(this.x - this.eyeToEyeDistance*Math.cos(-this.angle), this.y+this.bodyHeightScale+this.headToBodySpacing+this.eyeHeightScale, this.z - this.eyeToEyeDistance*Math.sin(-this.angle));
+	 	this.scene.translate(this.x - this.eyeToEyeDistance*Math.cos(-this.angle), this.y+this.bodyHeightScale+this.headToBodySpacing+this.eyeHeightScale+this.wheelDiameterScale, this.z - this.eyeToEyeDistance*Math.sin(-this.angle));
 	 	this.scene.rotate(this.angle, 0, 1, 0);
 	 	this.scene.scale(this.eyeDiameterScale, this.eyeDiameterScale, this.eyeDepthScale);
 	 	this.cylinder.display();
@@ -272,14 +272,14 @@ MyRobot.prototype.displayEyes = function() {
  
  MyRobot.prototype.displayWheels = function() {
 	this.scene.pushMatrix();
-		this.scene.translate(this.x + this.bodyDiameterScale*Math.sin(this.angle + Math.PI/2), this.y, this.z + this.bodyDiameterScale*Math.cos(this.angle + Math.PI/2));
+		this.scene.translate(this.x + this.bodyDiameterScale*Math.sin(this.angle + Math.PI/2), this.y+this.wheelDiameterScale, this.z + this.bodyDiameterScale*Math.cos(this.angle + Math.PI/2));
 		this.scene.rotate(this.angle+Math.PI/2, 0, 1, 0);
 		this.scene.rotate(this.leftWheelAngle, 0, 0, 1);
 		this.scene.scale(this.wheelDiameterScale, this.wheelDiameterScale, this.wheelDepthScale);
 		this.wheel.display();
 	this.scene.popMatrix();
 	this.scene.pushMatrix();
-		this.scene.translate(this.x - this.bodyDiameterScale*Math.sin(this.angle + Math.PI/2), this.y, this.z - this.bodyDiameterScale*Math.cos(this.angle + Math.PI/2));
+		this.scene.translate(this.x - this.bodyDiameterScale*Math.sin(this.angle + Math.PI/2), this.y+this.wheelDiameterScale0, this.z - this.bodyDiameterScale*Math.cos(this.angle + Math.PI/2));
 		this.scene.rotate(this.angle+3*Math.PI/2, 0, 1, 0);
 		this.scene.rotate(-this.rightWheelAngle, 0, 0, 1);
 		this.scene.scale(this.wheelDiameterScale, this.wheelDiameterScale, this.wheelDepthScale);
