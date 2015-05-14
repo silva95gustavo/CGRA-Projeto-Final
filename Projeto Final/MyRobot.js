@@ -19,6 +19,12 @@ var ANGLE_LIMIT = 0.1;
  	this.defaultAngleResistance = 1;
  	this.defaultAngleAcceleration = 0.8;
 
+ 	this.armDefaultSpeed = 0.02;
+ 	this.armRotationSpeed = 0;
+ 	this.armRotationResitance = 1;
+ 	this.armRotaionSpan = Math.PI/4;
+ 	this.armRotationSlowingFactor = Math.PI/80;
+
  	this.x = 0;
  	this.y = 0;
  	this.z = 0;
@@ -51,6 +57,8 @@ var ANGLE_LIMIT = 0.1;
  	this.armDiameterScale = this.bodyDiameterScale/5;
  	this.armHeightScale = this.bodyDiameterScale/(6/9);
  	this.armToBodySpacing = this.armDiameterScale + 1.1*this.bodyDiameterScale;
+ 	this.leftArmAngle = Math.PI/4;
+ 	this.rightArmAngle = Math.PI/4;
  	
  	//this.armEnd = new MyHalfSphere(this.scene, this.objectSlices, this.objectStacks);
  	this.armEndHeightScale = 1;
@@ -108,11 +116,13 @@ var ANGLE_LIMIT = 0.1;
  };
 
  MyRobot.prototype.move = function(delta) {
+	this.armRotationSpeed = this.armDefaultSpeed;
  	this.x += delta*Math.sin(this.angle);
  	this.z += delta*Math.cos(this.angle);
  };
 
  MyRobot.prototype.rotate = function(alfa) {
+	this.armRotationSpeed = this.armDefaultSpeed;
  	this.angleSpeed += alfa;
  	//this.angle += alfa;
  };
@@ -140,6 +150,40 @@ var ANGLE_LIMIT = 0.1;
  	angleShift = this.speed*(delta_t/1000)*this.sizeScale/this.wheelDiameterScale;
  	this.rightWheelAngle += angleShift;
  	this.leftWheelAngle += angleShift;
+ 	
+ 	if(this.speed == 0)
+ 	{
+ 		if(this.rightArmAngle != 0) {
+ 			newAng = this.rightArmAngle-this.armRotationSlowingFactor;
+ 	 		if(Math.abs(newAng) != newAng)
+ 	 			newAng = 0;
+ 	 		this.rightArmAngle=newAng;
+ 		}
+ 		if(this.leftArmAngle != 0) {
+ 			newAng = this.leftArmAngle-this.armRotationSlowingFactor;
+ 	 		if(Math.abs(newAng) != newAng)
+ 	 			newAng = 0;
+ 	 		this.leftArmAngle=newAng;
+ 		}
+ 	}
+ 	else
+ 	{
+ 		if(this.armRotationSpeed != 0)
+ 		{
+ 			console.log(this.armRotaionSpan);
+ 			newAng = this.rightArmAngle+this.armRotationSpeed*this.speed;
+ 			if(newAng < -this.armRotaionSpan) {
+ 				this.armRotationSpeed = -this.armRotationSpeed;
+ 				newAng = -this.armRotaionSpan;
+ 			} else if(newAng > this.armRotaionSpan) {
+ 				this.armRotationSpeed = -this.armRotationSpeed;
+ 				newAng = this.armRotaionSpan;
+ 			}
+ 			this.rightArmAngle = newAng;
+ 			this.leftArmAngle = -newAng;
+ 		}
+ 	}
+ 	
 	
 	this.speed -= this.speed * delta_t/1000 * this.resistance;
 
@@ -209,23 +253,24 @@ MyRobot.prototype.displayArms = function() {
 	 this.scene.pushMatrix();
 	 	this.scene.translate(this.armToBodySpacing*Math.cos(-this.angle), this.wheelDiameterScale, this.armToBodySpacing*Math.sin(-this.angle));
 	 	this.scene.translate(this.x, this.y+this.bodyHeightScale-this.armHeightScale, this.z);
-	 	//this.scene.rotate(this.angle, 0, 1, 0);
-	 	//this.scene.rotate(Math.PI/2, 1, 0, 0); // THIS IS WHERE THE ARM MOVEMENT ROTATION WILL GO
+
+	 	this.scene.rotate(this.angle+Math.PI, 0, 1, 0);
+	 	this.scene.translate(0, this.armHeightScale, 0);
+	 	this.scene.rotate(this.leftArmAngle, 1, 0, 0);
+	 	this.scene.translate(0, -this.armHeightScale, 0);
+	 	
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
 	 	this.scene.scale(this.armDiameterScale, this.armDiameterScale, this.armHeightScale);
 	 	this.cylinder.display();
-	 	//this.leftArm.display();
 	 	this.scene.pushMatrix();
 			this.scene.rotate(Math.PI, 1, 0, 0);
 			this.scene.scale(1, 1, this.armDiameterScale/this.armHeightScale);
 			this.hsphere.display();
-			//this.armEnd.display();
 		this.scene.popMatrix();
 		this.scene.pushMatrix();
 			this.scene.translate(0, 0, 1);
 			this.scene.scale(1, 1, this.armDiameterScale/this.armHeightScale);
 			this.hsphere.display();
-			//this.armEnd.display();
 		this.scene.popMatrix();
 	 this.scene.popMatrix();
 	 
@@ -233,8 +278,12 @@ MyRobot.prototype.displayArms = function() {
 	 this.scene.pushMatrix();
 	 	this.scene.translate(this.armToBodySpacing*Math.cos(-this.angle + Math.PI), this.wheelDiameterScale, this.armToBodySpacing*Math.sin(-this.angle + Math.PI));
 	 	this.scene.translate(this.x, this.y+this.bodyHeightScale-this.armHeightScale, this.z);
-	 	//this.scene.rotate(this.angle, 0, 1, 0);
-	 	//this.scene.rotate(Math.PI/2, 1, 0, 0);  THIS IS WHERE THE ARM MOVEMENT ROTATION WILL GO
+
+	 	this.scene.rotate(this.angle+Math.PI, 0, 1, 0);
+	 	this.scene.translate(0, this.armHeightScale, 0);
+	 	this.scene.rotate(this.rightArmAngle, 1, 0, 0);
+	 	this.scene.translate(0, -this.armHeightScale, 0);
+	 	
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
 	 	this.scene.scale(this.armDiameterScale, this.armDiameterScale, this.armHeightScale);
 	 	this.cylinder.display();
