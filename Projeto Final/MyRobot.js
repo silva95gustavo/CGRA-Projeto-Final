@@ -35,23 +35,24 @@ var ANGLE_LIMIT = 0.1;
  	this.objectStacks = 60;
  	
  	this.body = new MyRobotBody(this.scene, this.objectSlices, this.objectStacks);
- 	this.bodyDiameterScale = 1.5;
- 	this.bodyHeightScale = 3.5;
+ 	this.bodyDiameterScale = 0.8;
+ 	this.bodyHeightScale = 2;
  	
  	this.head = new MyRobotHead(this.scene, this.objectSlices, this.objectStacks);
+ 	this.headToBodySpacing = 0.1;
  	
  	this.leftArm = new MyRobotArm(this.scene, this.objectSlices, this.objectStacks); 	
  	this.rightArm = new MyRobotArm(this.scene, this.objectSlices, this.objectStacks);
- 	this.armDiameterScale = 0.3;
- 	this.armHeightScale = 2;
- 	this.armToBodySpacing = this.armDiameterScale + this.bodyDiameterScale + 0.075;
+ 	this.armDiameterScale = 0.16;
+ 	this.armHeightScale = 1.2;
+ 	this.armToBodySpacing = this.armDiameterScale + this.bodyDiameterScale + 0.05;
  	
  	this.armEnd = new MyRobotArmEnd(this.scene, this.objectSlices, this.objectStacks);
  	this.armEndHeightScale = 1;
  	
  	this.antenna = new MyRobotAntenna(this.scene, this.objectSlices, this.objectStacks);
  	this.antennaDiameterScale = 0.05;
- 	this.antennaHeightScale = 1.4;
+ 	this.antennaHeightScale = 1.25;
  	this.antennaLeanAngle = Math.PI/7;
  };
 
@@ -120,7 +121,7 @@ var ANGLE_LIMIT = 0.1;
 	 
 	 // Robot head
 	 this.scene.pushMatrix();
-	 	this.scene.translate(this.x, this.y+this.bodyHeightScale+0.14, this.z);
+	 	this.scene.translate(this.x, this.y+this.bodyHeightScale+this.headToBodySpacing, this.z);
 	 	this.scene.rotate(this.angle, 0, 1, 0);
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
 	 	this.scene.scale(this.bodyDiameterScale, this.bodyDiameterScale, this.bodyDiameterScale);
