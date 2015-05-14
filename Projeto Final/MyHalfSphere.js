@@ -1,8 +1,8 @@
 /**
- * MyRobotArmEnd
+ * MyHalfSphere
  * @constructor
  */
- function MyRobotArmEnd(scene, slices, stacks) {
+ function MyHalfSphere(scene, slices, stacks) {
  	CGFobject.call(this,scene);
 	
 	this.slices=slices;
@@ -11,10 +11,10 @@
  	this.initBuffers();
  };
 
- MyRobotArmEnd.prototype = Object.create(CGFobject.prototype);
- MyRobotArmEnd.prototype.constructor = MyRobotArmEnd;
+ MyHalfSphere.prototype = Object.create(CGFobject.prototype);
+ MyHalfSphere.prototype.constructor = MyHalfSphere;
 
- MyRobotArmEnd.prototype.initBuffers = function() {
+MyHalfSphere.prototype.initBuffers = function() {
  	
 	var ang = Math.PI*2/this.slices;
  	var alfa = 0;
@@ -51,6 +51,32 @@
 		}
 
 		beta += ang2;
+	}
+	
+	this.vertices.push(0, 0, 0);
+	this.normals.push(0, 0, -1);
+	//this.texCoords.push(0.5, 0.5);
+	
+	verts+=1;
+	alfa=0;
+	
+	index = verts-1;
+
+	for(i = 0; i < this.slices; i++)
+	{
+		x=Math.cos(alfa);
+		y=Math.sin(alfa);
+		this.vertices.push(x, y, 0);
+		this.normals.push(0, 0, -1);
+		//this.texCoords.push(x/2+0.5, -y/2+0.5);
+		
+		alfa+=ang;
+		verts++;
+
+		if(i < this.slices-1)
+			this.indices.push(index, verts, verts-1);
+		else
+			this.indices.push(index, index+1, verts-1);
 	}
 
  	this.primitiveType = this.scene.gl.TRIANGLES;

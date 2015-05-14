@@ -1,27 +1,27 @@
 /**
- * MyRobotArm
+ * MyCylinderTopped
  * @constructor
  */
- function MyRobotArm(scene, slices, stacks) {
+ function MyCylinderTopped(scene, slices, stacks) {
  	CGFobject.call(this,scene);
  	
 	this.slices=slices;
 	this.stacks=stacks;
  	this.initBuffers();
  };
- MyRobotArm.prototype = Object.create(CGFobject.prototype);
- MyRobotArm.prototype.constructor = MyRobotArm;
+ MyCylinderTopped.prototype = Object.create(CGFobject.prototype);
+ MyCylinderTopped.prototype.constructor = MyCylinderTopped;
  
- MyRobotArm.prototype.display = function() {
+ MyCylinderTopped.prototype.display = function() {
 	 this.drawElements(this.primitiveType);
  }
  
- MyRobotArm.prototype.initBuffers = function() {
+ MyCylinderTopped.prototype.initBuffers = function() {
  	var ang = Math.PI*2/this.slices;
  	var alfa = 0;
  	
  	/////////////////////////////////////////////////////////
- 	///////////// Draw the cylinder of the arm //////////////
+ 	////////// Draw the cylinder of the cylinder ////////////
  	/////////////////////////////////////////////////////////
 
  	this.indices = [];
@@ -56,7 +56,7 @@
 	}
 
  	/////////////////////////////////////////////////////////
- 	////////////// Draw the bottom of the arm ///////////////
+ 	//////////// Draw the bottom of the cylinder ////////////
  	/////////////////////////////////////////////////////////
  	
  	this.vertices.push(0, 0, 0);
@@ -87,7 +87,7 @@
 	
 
  	/////////////////////////////////////////////////////////
- 	/////////////// Draw the top of the arm /////////////////
+ 	//////////// Draw the top of the cylinder ///////////////
  	/////////////////////////////////////////////////////////
 	
 	this.vertices.push(0, 0, 1);

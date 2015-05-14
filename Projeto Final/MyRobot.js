@@ -34,26 +34,32 @@ var ANGLE_LIMIT = 0.1;
  	this.objectSlices = 300;
  	this.objectStacks = 60;
  	
- 	this.body = new MyRobotBody(this.scene, this.objectSlices, this.objectStacks);
- 	this.bodyDiameterScale = 0.8;
- 	this.bodyHeightScale = 2;
+ 	this.sizeScale = 1;
  	
- 	this.head = new MyRobotHead(this.scene, this.objectSlices, this.objectStacks);
- 	this.headToBodySpacing = 0.1;
+ 	this.cylinder = new MyCylinderTopped(this.scene, this.objectSlices, this.objectStacks);
+ 	this.hsphere = new MyHalfSphere(this.scene, this.objectSlices, this.objectStacks);
  	
- 	this.leftArm = new MyRobotArm(this.scene, this.objectSlices, this.objectStacks); 	
- 	this.rightArm = new MyRobotArm(this.scene, this.objectSlices, this.objectStacks);
- 	this.armDiameterScale = 0.16;
- 	this.armHeightScale = 1.2;
- 	this.armToBodySpacing = this.armDiameterScale + this.bodyDiameterScale + 0.05;
+ 	//this.body = new MyCylinderTopped(this.scene, this.objectSlices, this.objectStacks);
+ 	this.bodyDiameterScale = this.sizeScale*0.8;
+ 	this.bodyHeightScale = this.sizeScale*2;
  	
- 	this.armEnd = new MyRobotArmEnd(this.scene, this.objectSlices, this.objectStacks);
+ 	//this.head = new MyHalfSphere(this.scene, this.objectSlices, this.objectStacks);
+ 	this.headToBodySpacing = this.sizeScale*0.1;
+ 	
+ 	//this.leftArm = new MyCylinderTopped(this.scene, this.objectSlices, this.objectStacks); 	
+ 	//this.rightArm = new MyCylinderTopped(this.scene, this.objectSlices, this.objectStacks);
+ 	this.armDiameterScale = this.sizeScale*0.16;
+ 	this.armHeightScale = this.sizeScale*1.2;
+ 	this.armToBodySpacing = this.armDiameterScale + this.bodyDiameterScale + this.sizeScale*0.05;
+ 	
+ 	//this.armEnd = new MyHalfSphere(this.scene, this.objectSlices, this.objectStacks);
  	this.armEndHeightScale = 1;
  	
- 	this.antenna = new MyRobotAntenna(this.scene, this.objectSlices, this.objectStacks);
- 	this.antennaDiameterScale = 0.05;
+ 	//this.antenna = new MyCylinderTopped(this.scene, this.objectSlices, this.objectStacks);
+ 	this.antennaDiameterScale = this.sizeScale*0.04;
  	this.antennaHeightScale = 1.25;
  	this.antennaLeanAngle = Math.PI/7;
+ 	this.antennaHeightAdjustment = this.sizeScale*0.2;
  };
 
  MyRobot.prototype = Object.create(CGFobject.prototype);
@@ -116,7 +122,8 @@ var ANGLE_LIMIT = 0.1;
 	 	this.scene.rotate(this.angle, 0, 1, 0);
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
 	 	this.scene.scale(this.bodyDiameterScale, this.bodyDiameterScale, this.bodyHeightScale);
-	 	this.body.display();
+	 	this.cylinder.display();
+	 	//this.body.display();
 	 this.scene.popMatrix();
 	 
 	 // Robot head
@@ -125,33 +132,38 @@ var ANGLE_LIMIT = 0.1;
 	 	this.scene.rotate(this.angle, 0, 1, 0);
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
 	 	this.scene.scale(this.bodyDiameterScale, this.bodyDiameterScale, this.bodyDiameterScale);
-	 	this.head.display();
+	 	this.hsphere.display();
+	 	//this.head.display();
 	 	this.scene.pushMatrix();
 	 		this.scene.rotate(this.antennaLeanAngle, 0, 1, 0);
- 			this.scene.translate(0, 0, 0.2);
+ 			this.scene.translate(0, 0, this.antennaHeightAdjustment);
 	 		this.scene.scale(this.antennaDiameterScale, this.antennaDiameterScale, this.antennaHeightScale);
-	 		this.antenna.display();
+	 		this.cylinder.display();
+	 		//this.antenna.display();
 	 	this.scene.popMatrix();
 	 	this.scene.pushMatrix();
  			this.scene.rotate(-this.antennaLeanAngle, 0, 1, 0);
- 			this.scene.translate(0, 0, 0.2);
+ 			this.scene.translate(0, 0, this.antennaHeightAdjustment);
  			this.scene.scale(this.antennaDiameterScale, this.antennaDiameterScale, this.antennaHeightScale);
- 			this.antenna.display();
+	 		this.cylinder.display();
+	 		//this.antenna.display();
  		this.scene.popMatrix();
  		this.scene.pushMatrix();
 			this.scene.rotate(-this.antennaLeanAngle, 0, 1, 0);
-			this.scene.translate(0, 0, this.antennaHeightScale);
+			this.scene.translate(0, 0, this.antennaHeightScale + this.antennaHeightAdjustment);
 			this.scene.rotate(Math.PI/2, 0, 0, 1);
 			this.scene.scale(this.antennaDiameterScale, this.antennaDiameterScale, this.antennaDiameterScale);
-			this.armEnd.display();
+	 		this.hsphere.display();
+	 		//this.armEnd.display();
 		this.scene.popMatrix();
  		this.scene.pushMatrix();
-		this.scene.rotate(this.antennaLeanAngle, 0, 1, 0);
-		this.scene.translate(0, 0, this.antennaHeightScale);
-		this.scene.rotate(Math.PI/2, 0, 0, 1);
-		this.scene.scale(this.antennaDiameterScale, this.antennaDiameterScale, this.antennaDiameterScale);
-		this.armEnd.display();
-	this.scene.popMatrix();
+ 			this.scene.rotate(this.antennaLeanAngle, 0, 1, 0);
+ 			this.scene.translate(0, 0, this.antennaHeightScale + this.antennaHeightAdjustment);
+ 			this.scene.rotate(Math.PI/2, 0, 0, 1);
+ 			this.scene.scale(this.antennaDiameterScale, this.antennaDiameterScale, this.antennaDiameterScale);
+	 		this.hsphere.display();
+	 		//this.armEnd.display();
+ 		this.scene.popMatrix();
 	 this.scene.popMatrix();
 	 
 	 // Left arm
@@ -162,16 +174,19 @@ var ANGLE_LIMIT = 0.1;
 	 	//this.scene.rotate(Math.PI/2, 1, 0, 0); // THIS IS WHERE THE ARM MOVEMENT ROTATION WILL GO
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
 	 	this.scene.scale(this.armDiameterScale, this.armDiameterScale, this.armHeightScale);
-	 	this.leftArm.display();
+	 	this.cylinder.display();
+	 	//this.leftArm.display();
 	 	this.scene.pushMatrix();
  			this.scene.rotate(Math.PI, 1, 0, 0);
  			this.scene.scale(1, 1, this.armDiameterScale/this.armHeightScale);
- 			this.armEnd.display();
+ 			this.hsphere.display();
+ 			//this.armEnd.display();
  		this.scene.popMatrix();
  		this.scene.pushMatrix();
  			this.scene.translate(0, 0, 1);
  			this.scene.scale(1, 1, this.armDiameterScale/this.armHeightScale);
- 			this.armEnd.display();
+ 			this.hsphere.display();
+ 			//this.armEnd.display();
  		this.scene.popMatrix();
 	 this.scene.popMatrix();
 	 
@@ -183,16 +198,19 @@ var ANGLE_LIMIT = 0.1;
 	 	//this.scene.rotate(Math.PI/2, 1, 0, 0);  THIS IS WHERE THE ARM MOVEMENT ROTATION WILL GO
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
 	 	this.scene.scale(this.armDiameterScale, this.armDiameterScale, this.armHeightScale);
-	 	this.leftArm.display();
+	 	this.cylinder.display();
+	 	//this.leftArm.display();
 	 	this.scene.pushMatrix();
 	 		this.scene.rotate(Math.PI, 1, 0, 0);
 	 		this.scene.scale(1, 1, this.armDiameterScale/this.armHeightScale);
-	 		this.armEnd.display();
+	 		this.hsphere.display();
+	 		//this.armEnd.display();
 	 	this.scene.popMatrix();
 	 	this.scene.pushMatrix();
 	 		this.scene.translate(0, 0, 1);
 	 		this.scene.scale(1, 1, this.armDiameterScale/this.armHeightScale);
-	 		this.armEnd.display();
+	 		this.hsphere.display();
+	 		//this.armEnd.display();
 	 	this.scene.popMatrix();
 	 this.scene.popMatrix();
 	 

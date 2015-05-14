@@ -63,8 +63,8 @@ LightingScene.prototype.init = function(application) {
 	this.robotAppearance.setDiffuse(102/255/1.3, 1/1.3, 0);
 	this.robotAppearance.setSpecular(102/255, 1, 0);
 	this.robotAppearance.setShininess(400);
-	this.robotAppearance.loadTexture("resources/images/green.png");
-	this.robotAppearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
+	//this.robotAppearance.loadTexture("resources/images/green.png");
+	//this.robotAppearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
 
 	// For plane animation
 	this.prevTime = 0;

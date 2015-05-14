@@ -18,12 +18,9 @@ serialInclude([
 	'MyCone.js',
 	'MyAirplane.js',
 	'MyInterface.js',
+	'MyHalfSphere.js',
+	'MyCylinderTopped.js',
 	'MyRobot.js',
-	'MyRobotBody.js',
-	'MyRobotHead.js',
-	'MyRobotArm.js',
-	'MyRobotArmEnd.js',
-	'MyRobotAntenna.js',
 
 	main=function() {
 		var app = new CGFapplication(document.body);
