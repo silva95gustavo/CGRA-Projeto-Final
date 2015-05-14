@@ -279,7 +279,7 @@ MyRobot.prototype.displayEyes = function() {
 		this.wheel.display();
 	this.scene.popMatrix();
 	this.scene.pushMatrix();
-		this.scene.translate(this.x - this.bodyDiameterScale*Math.sin(this.angle + Math.PI/2), this.y+this.wheelDiameterScale0, this.z - this.bodyDiameterScale*Math.cos(this.angle + Math.PI/2));
+		this.scene.translate(this.x - this.bodyDiameterScale*Math.sin(this.angle + Math.PI/2), this.y+this.wheelDiameterScale, this.z - this.bodyDiameterScale*Math.cos(this.angle + Math.PI/2));
 		this.scene.rotate(this.angle+3*Math.PI/2, 0, 1, 0);
 		this.scene.rotate(-this.rightWheelAngle, 0, 0, 1);
 		this.scene.scale(this.wheelDiameterScale, this.wheelDiameterScale, this.wheelDepthScale);
