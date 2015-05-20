@@ -10,9 +10,19 @@ var ANGLE_LIMIT = 0.1;
  function MyRobot(scene, slices, stacks) {
  	CGFobject.call(this,scene);
  	
- 	//TODO index variables
- 	//TODO fix cylinder texcoords
- 	
+ 	this.bodyApIndex = 0;
+ 	this.bodyTopApIndex = 1;
+ 	this.eyeApIndex = 2;
+ 	this.eyeFrontApIndex = 3;
+ 	this.wheelApIndex = 4;
+ 	this.wheelSideApIndex = 5;
+ 	this.armsApIndex = 6;
+ 	this.armTopApIndex = 7;
+ 	this.antennaApIndex = 8;
+ 	this.antennaTopApIndex = 9;
+ 	this.headApIndex = 10;
+ 	this.headBottomApIndex = 11;
+ 	 	
  	this.defaultDelta = 0.3;
  	this.defaultSpeed = 2;
  	this.defaultResistance = 0.5;
@@ -45,7 +55,8 @@ var ANGLE_LIMIT = 0.1;
  	
  	this.sizeScale = 1;
  	 
- 	this.cylinder = new MyCylinderTopped(this.scene, this.objectSlices, this.objectStacks);
+ 	this.circle = new MyCircle(this.scene, this.objectSlices);
+ 	this.cylinder = new MyCylinder(this.scene, this.objectSlices, this.objectStacks);
  	this.hsphere = new MyHalfSphere(this.scene, this.objectSlices, this.objectStacks);
  	
  	//this.body = new MyCylinderTopped(this.scene, this.objectSlices, this.objectStacks);
@@ -191,64 +202,96 @@ MyRobot.prototype.update = function(delta_t) {
 		this.speed = 0;
  };
   
-MyRobot.prototype.displayBody = function() {
+MyRobot.prototype.displayBody = function(sideTex, topTex) {
 
 	 this.scene.pushMatrix();
 	 	this.scene.translate(0, this.wheelDiameterScale, 0);
 	 	this.scene.rotate(this.angle, 0, 1, 0);
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
 	 	this.scene.scale(this.bodyDiameterScale, this.bodyDiameterScale, this.bodyHeightScale);
+ 		if (typeof sideTex != "undefined") {
+	 	   sideTex.apply();
+	 	}
 	 	this.cylinder.display();
+	 	this.scene.pushMatrix();	// Top
+	 		this.scene.translate(0, 0, 1);
+	 		if (typeof topTex != "undefined") {
+	 			topTex.apply();
+	 		}
+	 		this.circle.display();
+	 	this.scene.popMatrix();
+	 	this.scene.pushMatrix();	// Bottom
+	 		this.scene.rotate(Math.PI, 1, 0, 0);
+	 		if (typeof topTex != "undefined") {
+	 			topTex.apply();
+		 	}
+ 			this.circle.display();
+ 		this.scene.popMatrix();
 	 this.scene.popMatrix();
  };
  
-MyRobot.prototype.displayMoveBody = function() {
+MyRobot.prototype.displayMoveBody = function(sideTex, topTex) {
 	this.scene.pushMatrix();
 		this.scene.translate(this.x, this.y, this.z);
-		this.displayBody();
+		this.displayBody(sideTex, topTex);
 	this.scene.popMatrix();
 }
  
-MyRobot.prototype.displayHead = function() {
+MyRobot.prototype.displayHead = function(sideTex, bottomTex, antennaSideTex, antennaTopTex) {
 
 	 this.scene.pushMatrix();
 	 	this.scene.translate(0, this.bodyHeightScale+this.headToBodySpacing+this.wheelDiameterScale, 0);
 	 	this.scene.rotate(this.angle, 0, 1, 0);
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
-	 	this.scene.pushMatrix();
+	 	this.scene.pushMatrix();	// Head itself
 	 		this.scene.scale(this.bodyDiameterScale, this.bodyDiameterScale, this.bodyDiameterScale);
+	 		if (typeof sideTex != "undefined") {
+	 			sideTex.apply();
+	 		}
 	 		this.hsphere.display();
+	 		this.scene.rotate(Math.PI, 1, 0, 0);
+	 		if (typeof bottomTex != "undefined") {
+	 			bottomTex.apply();
+	 		}
+	 		this.circle.display();
 	 	this.scene.popMatrix();
-	 	//this.head.display();
-	 	this.scene.pushMatrix();
+	 	this.scene.pushMatrix();	// Left Antenna
 	 		this.scene.rotate(this.antennaLeanAngle, 0, 1, 0);
 			this.scene.translate(0, 0, this.antennaHeightAdjustment);
 	 		this.scene.scale(this.antennaDiameterScale, this.antennaDiameterScale, this.antennaHeightScale);
+	 		if (typeof antennaSideTex != "undefined") {
+	 			antennaSideTex.apply();
+	 		}
 	 		this.cylinder.display();
-	 		//this.antenna.display();
 	 	this.scene.popMatrix();
-	 	this.scene.pushMatrix();
+	 	this.scene.pushMatrix();	// Right Antenna
 			this.scene.rotate(-this.antennaLeanAngle, 0, 1, 0);
 			this.scene.translate(0, 0, this.antennaHeightAdjustment);
 			this.scene.scale(this.antennaDiameterScale, this.antennaDiameterScale, this.antennaHeightScale);
+	 		if (typeof antennaSideTex != "undefined") {
+	 			antennaSideTex.apply();
+	 		}
 	 		this.cylinder.display();
-	 		//this.antenna.display();
 		this.scene.popMatrix();
-		this.scene.pushMatrix();
+		this.scene.pushMatrix();	// Left Antenna Top
 			this.scene.rotate(-this.antennaLeanAngle, 0, 1, 0);
 			this.scene.translate(0, 0, this.antennaHeightScale + this.antennaHeightAdjustment);
 			this.scene.rotate(Math.PI/2, 0, 0, 1);
 			this.scene.scale(this.antennaDiameterScale, this.antennaDiameterScale, this.antennaDiameterScale);
+	 		if (typeof antennaTopTex != "undefined") {
+	 			antennaTopTex.apply();
+	 		}
 	 		this.hsphere.display();
-	 		//this.armEnd.display();
 		this.scene.popMatrix();
-		this.scene.pushMatrix();
+		this.scene.pushMatrix();	// Right Antenna Top
 			this.scene.rotate(this.antennaLeanAngle, 0, 1, 0);
 			this.scene.translate(0, 0, this.antennaHeightScale + this.antennaHeightAdjustment);
 			this.scene.rotate(Math.PI/2, 0, 0, 1);
 			this.scene.scale(this.antennaDiameterScale, this.antennaDiameterScale, this.antennaDiameterScale);
+	 		if (typeof antennaTopTex != "undefined") {
+	 			antennaTopTex.apply();
+	 		}
 	 		this.hsphere.display();
-	 		//this.armEnd.display();
 		this.scene.popMatrix();
 	 this.scene.popMatrix();
  };
@@ -256,11 +299,11 @@ MyRobot.prototype.displayHead = function() {
 MyRobot.prototype.displayMoveHead = function() {
 	this.scene.pushMatrix();
 		this.scene.translate(this.x, this.y, this.z);
-		this.displayHead();
+		this.displayHead(sideTex, bottomTex, antennaSideTex, antennaTopTex);
 	this.scene.popMatrix();
 }
  
-MyRobot.prototype.displayArms = function() {
+MyRobot.prototype.displayArms = function(sideTex, topTex) {
 
 	 // Left arm
 	 this.scene.pushMatrix();
@@ -272,15 +315,24 @@ MyRobot.prototype.displayArms = function() {
 	 	
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
 	 	this.scene.scale(this.armDiameterScale, this.armDiameterScale, this.armHeightScale);
+ 		if (typeof sideTex != "undefined") {
+ 			sideTex.apply();
+ 		}
 	 	this.cylinder.display();
 	 	this.scene.pushMatrix();
 			this.scene.rotate(Math.PI, 1, 0, 0);
 			this.scene.scale(1, 1, this.armDiameterScale/this.armHeightScale);
+	 		if (typeof topTex != "undefined") {
+	 			topTex.apply();
+	 		}
 			this.hsphere.display();
 		this.scene.popMatrix();
 		this.scene.pushMatrix();
 			this.scene.translate(0, 0, 1);
 			this.scene.scale(1, 1, this.armDiameterScale/this.armHeightScale);
+	 		if (typeof topTex != "undefined") {
+	 			topTex.apply();
+	 		}
 			this.hsphere.display();
 		this.scene.popMatrix();
 	 this.scene.popMatrix();
@@ -296,59 +348,87 @@ MyRobot.prototype.displayArms = function() {
 	 	
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
 	 	this.scene.scale(this.armDiameterScale, this.armDiameterScale, this.armHeightScale);
+ 		if (typeof sideTex != "undefined") {
+ 			sideTex.apply();
+ 		}
 	 	this.cylinder.display();
 	 	//this.leftArm.display();
 	 	this.scene.pushMatrix();
 	 		this.scene.rotate(Math.PI, 1, 0, 0);
 	 		this.scene.scale(1, 1, this.armDiameterScale/this.armHeightScale);
+	 		if (typeof topTex != "undefined") {
+	 			topTex.apply();
+	 		}
 	 		this.hsphere.display();
 	 		//this.armEnd.display();
 	 	this.scene.popMatrix();
 	 	this.scene.pushMatrix();
 	 		this.scene.translate(0, 0, 1);
 	 		this.scene.scale(1, 1, this.armDiameterScale/this.armHeightScale);
+	 		if (typeof topTex != "undefined") {
+	 			topTex.apply();
+	 		}
 	 		this.hsphere.display();
 	 		//this.armEnd.display();
 	 	this.scene.popMatrix();
 	 this.scene.popMatrix();
  };
  
-MyRobot.prototype.displayMoveArms = function() {
+MyRobot.prototype.displayMoveArms = function(sideTex, topTex) {
 	this.scene.pushMatrix();
 		this.scene.translate(this.x, this.y, this.z);
-		this.displayArms();
+		this.displayArms(sideTex, topTex);
 	this.scene.popMatrix();
 }
  
-MyRobot.prototype.displayEyes = function() {
+MyRobot.prototype.displayEyes = function(sideTex, frontTex) {
 
-	 this.scene.pushMatrix();
+	 this.scene.pushMatrix();	// Left eye
 	 	this.scene.translate(this.eyeToEyeDistance*Math.cos(-this.angle), this.bodyHeightScale+this.headToBodySpacing+this.eyeHeightScale+this.wheelDiameterScale, this.eyeToEyeDistance*Math.sin(-this.angle));
 	 	this.scene.rotate(this.angle, 0, 1, 0);
 	 	this.scene.scale(this.eyeDiameterScale, this.eyeDiameterScale, this.eyeDepthScale);
+ 		if (typeof sideTex != "undefined") {
+ 			sideTex.apply();
+ 		}
 	 	this.cylinder.display();
+	 	this.scene.translate(0, 0, 1);
+ 		if (typeof frontTex != "undefined") {
+ 			frontTex.apply();
+ 		}
+	 	this.circle.display();
 	 this.scene.popMatrix();
-	 this.scene.pushMatrix();
+	 this.scene.pushMatrix();	// Right eye
 	 	this.scene.translate(-this.eyeToEyeDistance*Math.cos(-this.angle), this.bodyHeightScale+this.headToBodySpacing+this.eyeHeightScale+this.wheelDiameterScale, -this.eyeToEyeDistance*Math.sin(-this.angle));
 	 	this.scene.rotate(this.angle, 0, 1, 0);
 	 	this.scene.scale(this.eyeDiameterScale, this.eyeDiameterScale, this.eyeDepthScale);
+ 		if (typeof sideTex != "undefined") {
+ 			sideTex.apply();
+ 		}
 	 	this.cylinder.display();
+	 	this.scene.translate(0, 0, 1);
+ 		if (typeof frontTex != "undefined") {
+ 			frontTex.apply();
+ 		}
+	 	this.circle.display();
 	 this.scene.popMatrix();
  };
  
-MyRobot.prototype.displayMoveEyes = function() {
+MyRobot.prototype.displayMoveEyes = function(sideTex, frontTex) {
 	this.scene.pushMatrix();
 		this.scene.translate(this.x, this.y, this.z);
-		this.displayEyes();
+		this.displayEyes(sideTex, frontTex);
 	this.scene.popMatrix();
 }
  
-MyRobot.prototype.displayWheels = function() {
+MyRobot.prototype.displayWheels = function(frontTex, sideTex) {
 	this.scene.pushMatrix();
 		this.scene.translate(this.bodyDiameterScale*Math.sin(this.angle + Math.PI/2), this.wheelDiameterScale, this.bodyDiameterScale*Math.cos(this.angle + Math.PI/2));
 		this.scene.rotate(this.angle+Math.PI/2, 0, 1, 0);
 		this.scene.rotate(this.leftWheelAngle, 0, 0, 1);
 		this.scene.scale(this.wheelDiameterScale, this.wheelDiameterScale, this.wheelDepthScale);
+ 		if (typeof frontTex != "undefined") {
+ 			frontTex.apply();
+ 		}
 		this.wheel.display();
 	this.scene.popMatrix();
 	this.scene.pushMatrix();
@@ -356,6 +436,9 @@ MyRobot.prototype.displayWheels = function() {
 		this.scene.rotate(this.angle+3*Math.PI/2, 0, 1, 0);
 		this.scene.rotate(-this.rightWheelAngle, 0, 0, 1);
 		this.scene.scale(this.wheelDiameterScale, this.wheelDiameterScale, this.wheelDepthScale);
+ 		if (typeof frontTex != "undefined") {
+ 			frontTex.apply();
+ 		}
 		this.wheel.display();
 	this.scene.popMatrix();
  };
@@ -395,27 +478,43 @@ MyRobot.prototype.display = function() {
 MyRobot.prototype.displayAppearance = function(appearanceSet) {
 
 	this.scene.pushMatrix();
-	this.scene.translate(this.x, this.y, this.z);
+	this.scene.translate(this.x, this.y, this.z);	
 	
-	 // Main robot body
-	appearanceSet[0].apply();
-	this.displayBody();
-	 
-	 // Robot head
-	 appearanceSet[0].apply();
-	 this.displayHead();
-	 
-	 // Robot arms
-	 appearanceSet[0].apply();
-	 this.displayArms();
-	 
-	 // Robot eyes
-	 appearanceSet[1].apply();
-	 this.displayEyes();
-	 
-	 // Robot wheels
-	 appearanceSet[2].apply();
-	 this.displayWheels();
+	if (typeof appearanceSet != "undefined") // texture set defined
+	{
+		// Main robot body
+		this.displayBody(appearanceSet[this.bodyApIndex], appearanceSet[this.bodyTopApIndex]);
+		 
+		// Robot head
+		this.displayHead(appearanceSet[this.headApIndex], appearanceSet[this.headBottomApIndex], appearanceSet[this.antennaApIndex], appearanceSet[this.antennaTopApIndex]);
+		
+		// Robot arms
+		this.displayArms(appearanceSet[this.armsApIndex], appearanceSet[this.armTopApIndex]);
+		 
+		// Robot eyes
+		this.displayEyes(appearanceSet[this.eyeApIndex], appearanceSet[this.eyeFrontApIndex]);
+		 
+		// Robot wheels
+		this.displayWheels(appearanceSet[this.wheelApIndex], appearanceSet[this.wheelSideApIndex]);
+	}
+	else
+	{
+		// Main robot body
+		this.displayBody();
+		 
+		// Robot head
+		this.displayHead();
+		
+		// Robot arms
+		this.displayArms();
+		 
+		// Robot eyes
+		this.displayEyes();
+		 
+		// Robot wheels
+		this.displayWheels();
+	}
+	
 
 	 this.scene.popMatrix();
 	 
