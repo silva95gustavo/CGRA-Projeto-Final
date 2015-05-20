@@ -26,7 +26,11 @@ LightingScene.prototype.init = function(application) {
 	this.gl.clearDepth(100.0);
 	this.gl.enable(this.gl.DEPTH_TEST);
 	this.gl.enable(this.gl.CULL_FACE);
+	this.gl.enable(this.gl.BLEND);
+	this.gl.blendEquation(this.gl.FUNC_ADD);
+	this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA); 
 	this.gl.depthFunc(this.gl.LEQUAL);
+	this.gl.depthMask(true);
 
 	this.axis = new CGFaxis(this);
 
@@ -91,16 +95,32 @@ LightingScene.prototype.init = function(application) {
 	this.windowAppearance.setDiffuse(0.8, 0.8, 0.8, 1);
 	this.windowAppearance.setSpecular(0.1, 0.1, 0.1, 1);
 	this.windowAppearance.setShininess(2);
-	this.windowAppearance.loadTexture("resources/images/window.png");
+	this.windowAppearance.loadTexture("resources/images/window_open.png");
 	this.windowAppearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
 	
-	this.landscapeAppearance = new CGFappearance(this);
-	this.landscapeAppearance.setAmbient(1, 1, 1, 1);
-	this.landscapeAppearance.setDiffuse(1, 1, 1, 1);
-	this.landscapeAppearance.setSpecular(0, 0, 0, 1);
-	this.landscapeAppearance.setShininess(1);
-	this.landscapeAppearance.loadTexture("resources/images/landscape.jpg");
-	this.landscapeAppearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
+	this.landscape0Appearance = new CGFappearance(this);
+	this.landscape0Appearance.setAmbient(1, 1, 1, 1);
+	this.landscape0Appearance.setDiffuse(1, 1, 1, 1);
+	this.landscape0Appearance.setSpecular(0, 0, 0, 1);
+	this.landscape0Appearance.setShininess(1);
+	this.landscape0Appearance.loadTexture("resources/images/landscape0.png");
+	this.landscape0Appearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
+	
+	this.landscape1Appearance = new CGFappearance(this);
+	this.landscape1Appearance.setAmbient(1, 1, 1, 1);
+	this.landscape1Appearance.setDiffuse(1, 1, 1, 1);
+	this.landscape1Appearance.setSpecular(0, 0, 0, 1);
+	this.landscape1Appearance.setShininess(1);
+	this.landscape1Appearance.loadTexture("resources/images/landscape1.png");
+	this.landscape1Appearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
+	
+	this.landscape2Appearance = new CGFappearance(this);
+	this.landscape2Appearance.setAmbient(1, 1, 1, 1);
+	this.landscape2Appearance.setDiffuse(1, 1, 1, 1);
+	this.landscape2Appearance.setSpecular(0, 0, 0, 1);
+	this.landscape2Appearance.setShininess(1);
+	this.landscape2Appearance.loadTexture("resources/images/landscape2.png");
+	this.landscape2Appearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
 
 	// Wall is a combination of the wall texture and the blue color
 	this.materialWall = new CGFappearance(this);
@@ -245,25 +265,37 @@ LightingScene.prototype.display = function() {
 
 
 	// ---- BEGIN Primitive drawing section
-
-	// Floor
-	this.pushMatrix();
-		this.translate(7.5, 0, 7.5);
-		this.rotate(-90 * degToRad, 1, 0, 0);
-		this.scale(15, 15, 0.2);
-		this.floorAppearance.apply();
-		this.floor.display();
-	this.popMatrix();
 	
-	// Landscape
+	// Landscape 2
+	this.pushMatrix();
+		this.translate(-10, 4, 7.5);
+		this.rotate(90 * degToRad, 0, 1, 0);
+		this.scale(15 * 2.5, 8 * 2.5, 1);
+		this.landscape2Appearance.apply();
+		this.landscape.display();
+	this.popMatrix();
+	this.gl.clear(this.gl.DEPTH_BUFFER_BIT);
+	
+	// Landscape 1
+	this.pushMatrix();
+		this.translate(-8, 4, 7.5);
+		this.rotate(90 * degToRad, 0, 1, 0);
+		this.scale(15 * 2.5, 8 * 2.5, 1);
+		this.landscape1Appearance.apply();
+		this.landscape.display();
+	this.popMatrix();
+	this.gl.clear(this.gl.DEPTH_BUFFER_BIT);
+	
+	// Landscape 0
 	this.pushMatrix();
 		this.translate(-3, 4, 7.5);
 		this.rotate(90 * degToRad, 0, 1, 0);
 		this.scale(15 * 1.5, 8 * 1.5, 1);
-		this.landscapeAppearance.apply();
+		this.landscape0Appearance.apply();
 		this.landscape.display();
 	this.popMatrix();
-
+	this.gl.clear(this.gl.DEPTH_BUFFER_BIT);
+	
 	// Left Wall
 	this.pushMatrix();
 		this.translate(0, 4, 7.5);
@@ -271,6 +303,16 @@ LightingScene.prototype.display = function() {
 		this.scale(15, 8, 0.2);
 		this.windowAppearance.apply();
 		this.leftWall.display();
+	this.popMatrix();
+	this.gl.clear(this.gl.DEPTH_BUFFER_BIT);
+	
+	// Floor
+	this.pushMatrix();
+		this.translate(7.5, 0, 7.5);
+		this.rotate(-90 * degToRad, 1, 0, 0);
+		this.scale(15, 15, 0.2);
+		this.floorAppearance.apply();
+		this.floor.display();
 	this.popMatrix();
 
 	// Right Wall
