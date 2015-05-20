@@ -38,7 +38,7 @@ var ANGLE_LIMIT = 0.1;
  	this.initBuffers();
  	
  	this.objectSlices = 300;
- 	this.objectStacks = 60;
+ 	this.objectStacks = 20;
  	
  	this.sizeScale = 1;
  	
@@ -170,7 +170,6 @@ var ANGLE_LIMIT = 0.1;
  	{
  		if(this.armRotationSpeed != 0)
  		{
- 			console.log(this.armRotaionSpan);
  			newAng = this.rightArmAngle+this.armRotationSpeed*this.speed;
  			if(newAng < -this.armRotaionSpan) {
  				this.armRotationSpeed = -this.armRotationSpeed;
