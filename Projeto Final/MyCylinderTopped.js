@@ -37,7 +37,7 @@
 		this.texCoords.push(0, 0);
 		verts += 1;
 
-		for(i = 0; i <= this.slices; i++)
+		for(i = 1; i <= this.slices; i++)
 		{
 			alfa+=ang;
 			x = Math.cos(alfa);
@@ -49,8 +49,8 @@
 
 			if(j > 0 && i > 0)
 			{
-				this.indices.push(verts-1, verts-2, verts-this.slices-3);
-				this.indices.push(verts-this.slices-4, verts-this.slices-3, verts-2);
+				this.indices.push(verts-1, verts-2, verts-this.slices-2);
+				this.indices.push(verts-this.slices-3, verts-this.slices-2, verts-2);
 			}
 		}
 	}

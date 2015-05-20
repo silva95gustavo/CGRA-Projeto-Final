@@ -57,27 +57,9 @@ LightingScene.prototype.init = function(application) {
 	this.robot.resistance = this.robot.defaultResistance;
 	this.robot.angle = 210*degToRad;
 	this.robot.angleResistance = this.robot.defaultAngleResistance;
-
-	this.robotGeneralAppearance = new CGFappearance(this);
-	this.robotGeneralAppearance.setAmbient(102/255/1.3, 1/1.3, 0);//(0.3, 0.3, 0.3);
-	this.robotGeneralAppearance.setDiffuse(102/255/1.3, 1/1.3, 0);//(0.7, 0.7, 0.7);
-	this.robotGeneralAppearance.setSpecular(102/255, 1, 0);//(1, 1, 1);
-	this.robotGeneralAppearance.setShininess(40);//(400);
-	//this.robotGeneralAppearance.loadTexture("resources/images/icecreamsandwich.png");
-	//this.robotGeneralAppearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
-	this.robotEyeAppearance = new CGFappearance(this);
-	this.robotEyeAppearance.setAmbient(0, 0, 0);
-	this.robotEyeAppearance.setDiffuse(0, 0, 0);
-	this.robotEyeAppearance.setSpecular(0.2, 0.2, 0.2);
-	this.robotEyeAppearance.setShininess(10);
-	this.robotWheelAppearance = new CGFappearance(this);
-	this.robotWheelAppearance.setAmbient(0.4, 0.4, 0.4);
-	this.robotWheelAppearance.setDiffuse(0.6, 0.6, 0.6);
-	this.robotWheelAppearance.setSpecular(0.2, 0.2, 0.2);
-	this.robotWheelAppearance.setShininess(10);
-	this.robotWheelAppearance.loadTexture("resources/images/wheel.png");
-	this.robotWheelAppearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
-	this.robotAppearanceSet = [this.robotGeneralAppearance, this.robotEyeAppearance, this.robotWheelAppearance];
+	this.robotAppearances = [];
+	this.setRobotTex(this.robotAppearances);
+	this.robotAppearanceIndex = this.androidGreenIndex;
 
 	// For plane animation
 	this.prevTime = 0;
@@ -375,7 +357,7 @@ LightingScene.prototype.display = function() {
 
 	// Robot
 	this.pushMatrix();
-		this.robot.displayAppearance(this.robotAppearanceSet);
+		this.robot.displayAppearance(this.robotAppearances[this.robotAppearanceIndex]);
 	this.popMatrix();
 
 	// ---- END Primitive drawing section
@@ -418,3 +400,88 @@ LightingScene.prototype.animatePlane = function(currTime) {
 		}
 	}	
 };
+
+LightingScene.prototype.setRobotTex = function(texSet) {
+	
+	// Standard green texture
+	robotAndroidGreen = [];
+	robotGeneralAppearance = new CGFappearance(this);
+	robotGeneralAppearance.setAmbient(102/255/1.3, 1/1.3, 0);
+	robotGeneralAppearance.setDiffuse(102/255/1.3, 1/1.3, 0);
+	robotGeneralAppearance.setSpecular(1, 1, 1);
+	robotGeneralAppearance.setShininess(400);
+	robotAndroidGreen[this.robot.bodyApIndex] = robotGeneralAppearance;
+	robotAndroidGreen[this.robot.bodyTopApIndex] = robotGeneralAppearance;
+	robotAndroidGreen[this.robot.armsApIndex] = robotGeneralAppearance;
+	robotAndroidGreen[this.robot.armTopApIndex] = robotGeneralAppearance;
+	robotAndroidGreen[this.robot.antennaApIndex] = robotGeneralAppearance;
+	robotAndroidGreen[this.robot.antennaTopApIndex] = robotGeneralAppearance;
+	robotAndroidGreen[this.robot.headApIndex] = robotGeneralAppearance;
+	robotAndroidGreen[this.robot.headBottomApIndex] = robotGeneralAppearance;
+	
+	robotEyeAppearance = new CGFappearance(this);
+	robotEyeAppearance.setAmbient(0, 0, 0);
+	robotEyeAppearance.setDiffuse(0, 0, 0);
+	robotEyeAppearance.setSpecular(0.2, 0.2, 0.2);
+	robotEyeAppearance.setShininess(10);
+	robotAndroidGreen[this.robot.eyeApIndex] = robotEyeAppearance;
+	robotAndroidGreen[this.robot.eyeFrontApIndex] = robotEyeAppearance;
+	
+	robotWheelAppearance = new CGFappearance(this);
+	robotWheelAppearance.setAmbient(0.4, 0.4, 0.4);
+	robotWheelAppearance.setDiffuse(0.6, 0.6, 0.6);
+	robotWheelAppearance.setSpecular(0.2, 0.2, 0.2);
+	robotWheelAppearance.setShininess(10);
+	robotWheelAppearance.loadTexture("resources/images/wheel.png");
+	robotWheelAppearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
+	robotAndroidGreen[this.robot.wheelApIndex] = robotWheelAppearance;
+	robotAndroidGreen[this.robot.wheelSideApIndex] = robotWheelAppearance;
+	
+	this.androidGreenIndex = texSet.length;
+	texSet.push(robotAndroidGreen);
+	
+	// Android Ice Cream Sandwich
+	robotAndroidICS = [];
+	robotGeneralAppearance = new CGFappearance(this);
+	robotGeneralAppearance.setAmbient(0.3, 0.3, 0.3);
+	robotGeneralAppearance.setDiffuse(0.7, 0.7, 0.7);
+	robotGeneralAppearance.setSpecular(1, 1, 1);
+	robotGeneralAppearance.setShininess(40);
+	robotGeneralAppearance.loadTexture("resources/images/icecreamsandwich.png");
+	robotAndroidICS[this.robot.bodyApIndex] = robotGeneralAppearance;
+	robotAndroidICS[this.robot.bodyTopApIndex] = robotGeneralAppearance;
+	robotAndroidICS[this.robot.antennaApIndex] = robotGeneralAppearance;
+	robotAndroidICS[this.robot.antennaTopApIndex] = robotGeneralAppearance;
+	robotAndroidICS[this.robot.headApIndex] = robotGeneralAppearance;
+	robotAndroidICS[this.robot.headBottomApIndex] = robotGeneralAppearance;
+	
+	robotEyeAppearance = new CGFappearance(this);
+	robotEyeAppearance.setAmbient(0, 0, 0);
+	robotEyeAppearance.setDiffuse(0, 0, 0);
+	robotEyeAppearance.setSpecular(0.2, 0.2, 0.2);
+	robotEyeAppearance.setShininess(10);
+	robotAndroidICS[this.robot.eyeApIndex] = robotEyeAppearance;
+	robotAndroidICS[this.robot.eyeFrontApIndex] = robotEyeAppearance;
+	
+	robotWheelAppearance = new CGFappearance(this);
+	robotWheelAppearance.setAmbient(0.4, 0.4, 0.4);
+	robotWheelAppearance.setDiffuse(0.6, 0.6, 0.6);
+	robotWheelAppearance.setSpecular(0.2, 0.2, 0.2);
+	robotWheelAppearance.setShininess(10);
+	robotWheelAppearance.loadTexture("resources/images/wheel.png");
+	robotWheelAppearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
+	robotAndroidICS[this.robot.wheelApIndex] = robotWheelAppearance;
+	robotAndroidICS[this.robot.wheelSideApIndex] = robotWheelAppearance;
+	
+	robotArmsAppearance = new CGFappearance(this);
+	robotArmsAppearance.setAmbient(0.3, 0.3, 0.3);
+	robotArmsAppearance.setDiffuse(0.7, 0.7, 0.7);
+	robotArmsAppearance.setSpecular(1, 1, 0);
+	robotArmsAppearance.setShininess(40);
+	robotArmsAppearance.loadTexture("resources/images/icecreamsandwicharms.png");
+	robotAndroidICS[this.robot.armsApIndex] = robotArmsAppearance;
+	robotAndroidICS[this.robot.armTopApIndex] = robotArmsAppearance;
+
+	this.androidICSIndex = texSet.length;
+	texSet.push(robotAndroidICS);
+}

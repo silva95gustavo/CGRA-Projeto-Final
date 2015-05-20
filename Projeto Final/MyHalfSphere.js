@@ -11,8 +11,8 @@
  	this.initBuffers();
  };
 
- MyHalfSphere.prototype = Object.create(CGFobject.prototype);
- MyHalfSphere.prototype.constructor = MyHalfSphere;
+MyHalfSphere.prototype = Object.create(CGFobject.prototype);
+MyHalfSphere.prototype.constructor = MyHalfSphere;
 
 MyHalfSphere.prototype.initBuffers = function() {
  	
@@ -26,13 +26,19 @@ MyHalfSphere.prototype.initBuffers = function() {
  	this.indices = [];
  	this.vertices = [];
  	this.normals = [];
+ 	this.texCoords = [];
  	verts = 0;
 
 	for(j = 0; j <= this.stacks; j++)
 	{
-		this.vertices.push(1 * Math.cos(beta), 0, Math.sin(beta));
-		this.normals.push(1 * Math.cos(beta), 0, Math.sin(beta));
-		verts += 1;
+		x = Math.cos(beta);
+		y = 0;
+		z = Math.sin(beta);
+		this.vertices.push(x, y, z);
+		this.normals.push(x, y, z);
+		//this.texCoords.push(Math.cos(beta)/2+0.5, -0/2+0.5);
+		this.texCoords.push(Math.asin(x)/Math.PI + 0.5, Math.asin(y)/Math.PI + 0.5);
+		verts++;
 
 		for(i = 0; i < this.slices; i++)
 		{
@@ -42,6 +48,8 @@ MyHalfSphere.prototype.initBuffers = function() {
 			z = Math.sin(beta);
 			this.vertices.push(x, y, z);
 			this.normals.push(x, y, z);
+			//this.texCoords.push(x/2+0.5, -y/2+0.5);
+			this.texCoords.push(Math.asin(x)/Math.PI + 0.5, Math.asin(y)/Math.PI + 0.5);
 			verts++;
 
 			if(j > 0)
@@ -54,9 +62,9 @@ MyHalfSphere.prototype.initBuffers = function() {
 		beta += ang2;
 	}
 	
-	this.vertices.push(0, 0, 0);
+	/*this.vertices.push(0, 0, 0);
 	this.normals.push(0, 0, -1);
-	//this.texCoords.push(0.5, 0.5);
+	this.texCoords.push(0.5, 0.5);
 	
 	verts+=1;
 	alfa=0;
@@ -69,7 +77,7 @@ MyHalfSphere.prototype.initBuffers = function() {
 		y=Math.sin(alfa);
 		this.vertices.push(x, y, 0);
 		this.normals.push(0, 0, -1);
-		//this.texCoords.push(x/2+0.5, -y/2+0.5);
+		this.texCoords.push(x/2+0.5, -y/2+0.5);
 		
 		alfa+=ang;
 		verts++;
@@ -78,7 +86,7 @@ MyHalfSphere.prototype.initBuffers = function() {
 			this.indices.push(index, verts, verts-1);
 		else
 			this.indices.push(index, index+1, verts-1);
-	}
+	}*/
 
  	this.primitiveType = this.scene.gl.TRIANGLES;
  	this.initGLBuffers();
