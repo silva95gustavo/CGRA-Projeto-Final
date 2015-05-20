@@ -10,6 +10,9 @@ var ANGLE_LIMIT = 0.1;
  function MyRobot(scene, slices, stacks) {
  	CGFobject.call(this,scene);
  	
+ 	//TODO index variables
+ 	//TODO fix cylinder texcoords
+ 	
  	this.defaultDelta = 0.3;
  	this.defaultSpeed = 2;
  	this.defaultResistance = 0.5;
