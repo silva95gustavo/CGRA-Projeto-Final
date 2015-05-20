@@ -376,7 +376,6 @@ LightingScene.prototype.display = function() {
 	this.pushMatrix();
 		//this.robot.updateTextures();
 		this.robotGeneralAppearance.apply();
-		this.robot.cylinder.display();
 		this.robot.displayBody();
 		this.robot.displayArms();
 		this.robot.displayHead();
