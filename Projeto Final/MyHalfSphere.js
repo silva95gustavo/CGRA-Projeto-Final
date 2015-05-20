@@ -37,10 +37,11 @@ MyHalfSphere.prototype.initBuffers = function() {
 		for(i = 0; i < this.slices; i++)
 		{
 			alfa+=ang;
-			x = Math.cos(alfa);
-			y = Math.sin(alfa);
-			this.vertices.push(x * (Math.cos(beta)), y * (Math.cos(beta)), Math.sin(beta));
-			this.normals.push(x * Math.cos(beta), y * Math.cos(beta), Math.sin(beta));
+			x = Math.cos(alfa) * (Math.cos(beta));
+			y = Math.sin(alfa) * (Math.cos(beta));
+			z = Math.sin(beta);
+			this.vertices.push(x, y, z);
+			this.normals.push(x, y, z);
 			verts++;
 
 			if(j > 0)

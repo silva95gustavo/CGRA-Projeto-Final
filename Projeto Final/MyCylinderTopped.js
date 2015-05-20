@@ -21,7 +21,7 @@
  	var alfa = 0;
  	
  	/////////////////////////////////////////////////////////
- 	////////// Draw the cylinder of the cylinder ////////////
+ 	//////////////////// Draw the cylinder //////////////////
  	/////////////////////////////////////////////////////////
 
  	this.indices = [];
@@ -33,7 +33,7 @@
  	for(j = 0; j <= this.stacks; j++)
 	{
 		this.vertices.push(1, 0, j / this.stacks);
-		this.normals.push(1, 0, j / this.stacks);
+		this.normals.push(1, 0, 0);
 		this.texCoords.push(0, 0);
 		verts += 1;
 
@@ -43,7 +43,7 @@
 			x = Math.cos(alfa);
 			y = Math.sin(alfa);
 			this.vertices.push(x, y, j / this.stacks);
-			this.normals.push(x, y, j / this.stacks);
+			this.normals.push(x, y, 0);
 			this.texCoords.push(i / this.slices, j / this.stacks);
 			verts++;
 

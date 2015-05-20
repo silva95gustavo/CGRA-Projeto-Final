@@ -63,11 +63,11 @@ LightingScene.prototype.init = function(application) {
 	this.robot.angleResistance = this.robot.defaultAngleResistance;
 
 	this.robotGeneralAppearance = new CGFappearance(this);
-	this.robotGeneralAppearance.setAmbient(102/255/1.3, 1/1.3, 0);
-	this.robotGeneralAppearance.setDiffuse(102/255/1.3, 1/1.3, 0);
-	this.robotGeneralAppearance.setSpecular(102/255, 1, 0);
-	this.robotGeneralAppearance.setShininess(400);
-	//this.robotGeneralAppearance.loadTexture("resources/images/green.png");
+	this.robotGeneralAppearance.setAmbient(102/255/1.3, 1/1.3, 0);//(0.3, 0.3, 0.3);
+	this.robotGeneralAppearance.setDiffuse(102/255/1.3, 1/1.3, 0);//(0.7, 0.7, 0.7);
+	this.robotGeneralAppearance.setSpecular(102/255, 1, 0);//(1, 1, 1);
+	this.robotGeneralAppearance.setShininess(40);//(400);
+	//this.robotGeneralAppearance.loadTexture("resources/images/icecreamsandwich.png");
 	//this.robotGeneralAppearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
 	this.robotEyeAppearance = new CGFappearance(this);
 	this.robotEyeAppearance.setAmbient(0, 0, 0);
@@ -81,6 +81,7 @@ LightingScene.prototype.init = function(application) {
 	this.robotWheelAppearance.setShininess(10);
 	this.robotWheelAppearance.loadTexture("resources/images/wheel.png");
 	this.robotWheelAppearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
+	this.robotAppearanceSet = [this.robotGeneralAppearance, this.robotEyeAppearance, this.robotWheelAppearance];
 
 	// For plane animation
 	this.prevTime = 0;
@@ -416,16 +417,7 @@ LightingScene.prototype.display = function() {
 
 	// Robot
 	this.pushMatrix();
-		//this.robot.updateTextures();
-		this.robotGeneralAppearance.apply();
-		this.robot.displayBody();
-		this.robot.displayArms();
-		this.robot.displayHead();
-		this.robotEyeAppearance.apply();
-		this.robot.displayEyes();
-		this.robotWheelAppearance.apply();
-		this.robot.displayWheels();
-		//this.robot.display();
+		this.robot.displayAppearance(this.robotAppearanceSet);
 	this.popMatrix();
 
 	// ---- END Primitive drawing section
