@@ -134,10 +134,21 @@ MyRobot.prototype.update = function(delta_t) {
 	if(Math.abs(this.angleSpeed) <= ANGLE_LIMIT)
 		this.angleSpeed = 0;
 
- 	this.x += this.speed * delta_t/1000 * Math.sin(this.angle) * this.sizeScale;
- 	this.z += this.speed * delta_t/1000 * Math.cos(this.angle) * this.sizeScale;
- 	
- 	angleShift = this.speed*(delta_t/1000)*this.sizeScale/this.wheelDiameterScale;
+	this.x += this.speed * delta_t/1000 * Math.sin(this.angle) * this.sizeScale;
+	this.z += this.speed * delta_t/1000 * Math.cos(this.angle) * this.sizeScale;
+
+	angleShift = this.speed*(delta_t/1000)*this.sizeScale/this.wheelDiameterScale;
+	if (this.x < this.sizeScale || this.x > 15 - this.sizeScale)
+	{
+		this.x -= this.speed * delta_t/1000 * Math.sin(this.angle) * this.sizeScale;
+		angleShift = 0;
+	}
+	if (this.z < this.sizeScale)
+	{
+		this.z -= this.speed * delta_t/1000 * Math.cos(this.angle) * this.sizeScale;
+		angleShift = 0;
+	}
+
  	this.rightWheelAngle += angleShift;
  	this.leftWheelAngle += angleShift;
  	
@@ -376,8 +387,7 @@ MyRobot.prototype.display = function() {
 	 // Robot wheels
 	 this.displayWheels();
 
-	this.scene.pushMatrix();
-	this.scene.translate(this.x, this.y, this.z);
+	this.scene.popMatrix();
 	 
 	 this.drawElements(this.primitiveType);
  }
