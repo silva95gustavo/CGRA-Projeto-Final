@@ -53,7 +53,7 @@ var ANGLE_LIMIT = 0.1;
  	this.objectSlices = 300;
  	this.objectStacks = 20;
  	
- 	this.sizeScale = 1;
+ 	this.sizeScale = 2;
  	 
  	this.circle = new MyCircle(this.scene, this.objectSlices);
  	this.cylinder = new MyCylinder(this.scene, this.objectSlices, this.objectStacks);

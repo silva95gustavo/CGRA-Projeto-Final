@@ -69,7 +69,7 @@ MyInterface.prototype.processKeyboard = function(event) {
 
 	// Check key codes e.g. here: http://www.asciitable.com/
 	// or use String.fromCharCode(event.keyCode) to compare chars
-
+	
 	// for better cross-browser support, you may also check suggestions on using event.which in http://www.w3schools.com/jsref/event_key_keycode.asp
 	switch (event.keyCode)
 	{
@@ -88,6 +88,62 @@ MyInterface.prototype.processKeyboard = function(event) {
 		case(68):
 		case(100):		// any 'D'
 			this.scene.robot.rotate(-this.scene.robot.defaultAngleAcceleration);
+		break;				
+	};
+};
+
+MyInterface.prototype.processKeyDown = function(event) {
+	CGFinterface.prototype.processKeyDown.call(this,event);
+
+	switch (event.keyCode)
+	{
+		case (87):
+		case (119):     // any 'W'
+			console.log('up');
+			this.scene.wKey = 1;
+			break;
+		case (83):
+		case (115):     // any 'S'
+			console.log('down');
+		this.scene.sKey = 1;
+			break;
+		case(65):
+		case(97):		// any 'A'
+			console.log('left');
+		this.scene.aKey = 1;
+			break;
+		case(68):
+		case(100):		// any 'D'
+			console.log('right');
+		this.scene.dKey = 1;
+		break;				
+	};
+};
+
+MyInterface.prototype.processKeyUp = function(event) {
+	CGFinterface.prototype.processKeyUp.call(this,event);
+
+	switch (event.keyCode)
+	{
+		case (87):
+		case (119):     // any 'W'
+			console.log('up');
+		this.scene.wKey = 0;
+			break;
+		case (83):
+		case (115):     // any 'S'
+			console.log('down');
+		this.scene.sKey = 0;
+			break;
+		case(65):
+		case(97):		// any 'A'
+			console.log('left');
+		this.scene.aKey = 0;
+			break;
+		case(68):
+		case(100):		// any 'D'
+			console.log('right');
+		this.scene.dKey = 0;
 		break;				
 	};
 };

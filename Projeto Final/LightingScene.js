@@ -63,7 +63,13 @@ LightingScene.prototype.init = function(application) {
 	this.robot.angleResistance = this.robot.defaultAngleResistance;
 	this.robotAppearances = [];
 	this.setRobotTex(this.robotAppearances);
-	this.robotAppearanceIndex = this.androidGreenIndex;
+	this.robotAppearanceIndex = this.androidICSIndex;
+	
+	// Key variables
+	this.wKey = 0;
+	this.aKey = 0;
+	this.sKey = 0;
+	this.dKey = 0;
 
 	// For plane animation
 	this.prevTime = 0;
@@ -212,6 +218,15 @@ LightingScene.prototype.update = function(currTime) {
 		this.lights[1].enable();
 	else
 		this.lights[1].disable();
+	
+	/*if(this.wKey != 0)
+		this.robot.move(0.2);
+	if(this.sKey != 0)
+		this.robot.move(-0.2);
+	if(this.aKey != 0)
+		this.robot.angle += 0.1;
+	if(this.dKey != 0)
+		this.robot.angle -= 0.1;*/
 }
 
 
@@ -365,9 +380,9 @@ LightingScene.prototype.display = function() {
 	
 	// Pillar
 	this.pushMatrix();
+		this.translate(0, 0, 16);
 		this.rotate(- Math.PI / 2, 1, 0, 0);
 		this.scale(1, 1, 8);
-		this.translate(15 / 2, -13, 0);
 		this.pillarAppearance.apply();
 		this.pillar.display();
 	this.popMatrix();
@@ -485,17 +500,38 @@ LightingScene.prototype.setRobotTex = function(texSet) {
 	// Android Ice Cream Sandwich
 	robotAndroidICS = [];
 	robotGeneralAppearance = new CGFappearance(this);
-	robotGeneralAppearance.setAmbient(0.3, 0.3, 0.3);
-	robotGeneralAppearance.setDiffuse(0.7, 0.7, 0.7);
+	robotGeneralAppearance.setAmbient(1, 1, 1);
+	robotGeneralAppearance.setDiffuse(1, 1, 1);
 	robotGeneralAppearance.setSpecular(1, 1, 1);
 	robotGeneralAppearance.setShininess(40);
 	robotGeneralAppearance.loadTexture("resources/images/icecreamsandwich.png");
 	robotAndroidICS[this.robot.bodyApIndex] = robotGeneralAppearance;
-	robotAndroidICS[this.robot.bodyTopApIndex] = robotGeneralAppearance;
-	robotAndroidICS[this.robot.antennaApIndex] = robotGeneralAppearance;
-	robotAndroidICS[this.robot.antennaTopApIndex] = robotGeneralAppearance;
-	robotAndroidICS[this.robot.headApIndex] = robotGeneralAppearance;
-	robotAndroidICS[this.robot.headBottomApIndex] = robotGeneralAppearance;
+
+	robotBodyTopAppearance = new CGFappearance(this);
+	robotBodyTopAppearance.setAmbient(1, 1, 1);
+	robotBodyTopAppearance.setDiffuse(1, 1, 1);
+	robotBodyTopAppearance.setSpecular(1, 1, 1);
+	robotBodyTopAppearance.setShininess(40);
+	robotBodyTopAppearance.loadTexture("resources/images/icecreamsandwichtop.png");
+	robotAndroidICS[this.robot.bodyTopApIndex] = robotBodyTopAppearance;
+	robotAndroidICS[this.robot.headBottomApIndex] = robotBodyTopAppearance;
+	
+	robotHeadAppearance = new CGFappearance(this);
+	robotHeadAppearance.setAmbient(1, 1, 1);
+	robotHeadAppearance.setDiffuse(1, 1, 1);
+	robotHeadAppearance.setSpecular(1, 1, 1);
+	robotHeadAppearance.setShininess(40);
+	robotHeadAppearance.loadTexture("resources/images/icecreamsandwichhead.png");
+	robotAndroidICS[this.robot.headApIndex] = robotHeadAppearance;
+	
+	robotAntennaAppearance = new CGFappearance(this);
+	robotAntennaAppearance.setAmbient(1, 1, 1);
+	robotAntennaAppearance.setDiffuse(1, 1, 1);
+	robotAntennaAppearance.setSpecular(1, 1, 1);
+	robotAntennaAppearance.setShininess(40);
+	robotAntennaAppearance.loadTexture("resources/images/icecreamsandwichantenna.png");
+	robotAndroidICS[this.robot.antennaApIndex] = robotAntennaAppearance;
+	robotAndroidICS[this.robot.antennaTopApIndex] = robotAntennaAppearance;
 	
 	robotEyeAppearance = new CGFappearance(this);
 	robotEyeAppearance.setAmbient(0, 0, 0);
@@ -516,13 +552,20 @@ LightingScene.prototype.setRobotTex = function(texSet) {
 	robotAndroidICS[this.robot.wheelSideApIndex] = robotWheelAppearance;
 	
 	robotArmsAppearance = new CGFappearance(this);
-	robotArmsAppearance.setAmbient(0.3, 0.3, 0.3);
-	robotArmsAppearance.setDiffuse(0.7, 0.7, 0.7);
-	robotArmsAppearance.setSpecular(1, 1, 0);
+	robotArmsAppearance.setAmbient(1, 1, 1);
+	robotArmsAppearance.setDiffuse(1, 1, 1);
+	robotArmsAppearance.setSpecular(1, 1, 1);
 	robotArmsAppearance.setShininess(40);
 	robotArmsAppearance.loadTexture("resources/images/icecreamsandwicharms.png");
 	robotAndroidICS[this.robot.armsApIndex] = robotArmsAppearance;
-	robotAndroidICS[this.robot.armTopApIndex] = robotArmsAppearance;
+	
+	robotArmsTopAppearance = new CGFappearance(this);
+	robotArmsTopAppearance.setAmbient(1, 1, 1);
+	robotArmsTopAppearance.setDiffuse(1, 1, 1);
+	robotArmsTopAppearance.setSpecular(1, 1, 1);
+	robotArmsTopAppearance.setShininess(40);
+	robotArmsTopAppearance.loadTexture("resources/images/icecreamsandwicharmstop.png");
+	robotAndroidICS[this.robot.armTopApIndex] = robotArmsTopAppearance;
 
 	this.androidICSIndex = texSet.length;
 	texSet.push(robotAndroidICS);
