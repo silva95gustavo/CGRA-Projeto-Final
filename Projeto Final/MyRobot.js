@@ -93,6 +93,10 @@ var ANGLE_LIMIT = 0.1;
  	this.wheelDepthScale = 0.2*this.bodyDiameterScale;
  	this.leftWheelAngle = 0;
  	this.rightWheelAngle = 0;
+ 	
+ 	this.lollipopTubeIndex = 0;
+ 	this.lollipopIndex = 1;
+ 	this.lollipopSideIndex = 2;
  };
 
  MyRobot.prototype = Object.create(CGFobject.prototype);
@@ -474,6 +478,51 @@ MyRobot.prototype.display = function() {
 	 
 	 this.drawElements(this.primitiveType);
  }
+
+MyRobot.prototype.displayLollipop = function(lollipopAppearanceSet) {
+	lollipopTubeHeightScale = 1.5;
+	lollipopDiameterScale = 0.5;
+	lollipopHeightScale = 0.03;
+	
+	this.scene.pushMatrix();
+	this.scene.translate(this.x, this.y, this.z);
+	this.scene.translate(this.armToBodySpacing*Math.cos(-this.angle), this.wheelDiameterScale + this.bodyHeightScale-this.armHeightScale, this.armToBodySpacing*Math.sin(-this.angle));
+	this.scene.rotate(this.angle+Math.PI, 0, 1, 0);
+	this.scene.translate(0, this.armHeightScale*(1-Math.cos(this.leftArmAngle)), -this.armHeightScale*Math.sin(this.leftArmAngle));
+	this.scene.rotate(this.leftArmAngle, 1, 0, 0);
+	this.scene.rotate(Math.PI/4, 0, 0, 1);
+	
+	// Tube
+	this.scene.pushMatrix();
+		this.scene.rotate(-Math.PI/2, 1, 0, 0);
+		this.scene.scale(lollipopHeightScale*this.bodyDiameterScale, lollipopHeightScale*this.bodyDiameterScale, lollipopTubeHeightScale*this.bodyDiameterScale);
+		lollipopAppearanceSet[this.lollipopTubeIndex].apply();
+		this.cylinder.display();
+		this.scene.rotate(Math.PI, 1, 0, 0);
+		this.circle.display();
+	this.scene.popMatrix();
+	
+	// Lollipop
+	this.scene.pushMatrix();
+		this.scene.translate(0, lollipopTubeHeightScale*this.bodyDiameterScale, 0);
+		this.scene.scale(lollipopDiameterScale*this.bodyDiameterScale, lollipopDiameterScale*this.bodyDiameterScale, 2*lollipopHeightScale*this.bodyDiameterScale);
+		this.scene.translate(0, 0, -0.5);
+		lollipopAppearanceSet[this.lollipopSideIndex].apply();
+		this.cylinder.display();
+		this.scene.pushMatrix();
+			this.scene.rotate(Math.PI, 1, 0, 0);
+			lollipopAppearanceSet[this.lollipopIndex].apply();
+			this.circle.display();
+		this.scene.popMatrix();
+		this.scene.pushMatrix();
+			this.scene.translate(0, 0, 1);
+			lollipopAppearanceSet[this.lollipopIndex].apply();
+			this.circle.display();
+		this.scene.popMatrix();
+	this.scene.popMatrix();
+	
+	this.scene.popMatrix();
+}
 
 MyRobot.prototype.displayAppearance = function(appearanceSet) {
 

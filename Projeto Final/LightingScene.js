@@ -63,7 +63,11 @@ LightingScene.prototype.init = function(application) {
 	this.robot.angleResistance = this.robot.defaultAngleResistance;
 	this.robotAppearances = [];
 	this.setRobotTex(this.robotAppearances);
-	this.robotAppearanceIndex = this.androidICSIndex;
+	this.robotAppearanceIndex = this.androidLollipopIndex;
+	// this.androidGreenIndex
+	// this.androidICSIndex
+	// this.androidKitKatIndex
+	// this.androidLollipopIndex
 	
 	// Key variables
 	this.wKey = 0;
@@ -419,6 +423,8 @@ LightingScene.prototype.display = function() {
 	// Robot
 	this.pushMatrix();
 		this.robot.displayAppearance(this.robotAppearances[this.robotAppearanceIndex]);
+		if(this.robotAppearanceIndex == this.androidLollipopIndex)
+			this.robot.displayLollipop(this.lollipopSet);
 	this.popMatrix();
 
 	// ---- END Primitive drawing section
@@ -573,4 +579,117 @@ LightingScene.prototype.setRobotTex = function(texSet) {
 
 	this.androidICSIndex = texSet.length;
 	texSet.push(robotAndroidICS);
+	
+	// Android KitKat
+	robotAndroidKitKat = [];
+	robotGeneralAppearance = new CGFappearance(this);
+	robotGeneralAppearance.setAmbient(1, 1, 1);
+	robotGeneralAppearance.setDiffuse(1, 1, 1);
+	robotGeneralAppearance.setSpecular(1, 1, 1);
+	robotGeneralAppearance.setShininess(40);
+	robotGeneralAppearance.loadTexture("resources/images/kitkatbodyside.png");
+	robotAndroidKitKat[this.robot.bodyApIndex] = robotGeneralAppearance;
+
+	robotBodyTopAppearance = new CGFappearance(this);
+	robotBodyTopAppearance.setAmbient(0, 0, 0);
+	robotBodyTopAppearance.setDiffuse(0, 0, 0);
+	robotBodyTopAppearance.setSpecular(0, 0, 0);
+	robotBodyTopAppearance.setShininess(40);
+	robotAndroidKitKat[this.robot.bodyTopApIndex] = robotBodyTopAppearance;
+	robotAndroidKitKat[this.robot.headBottomApIndex] = robotBodyTopAppearance;
+	
+	robotHeadAppearance = new CGFappearance(this);
+	robotHeadAppearance.setAmbient(1, 1, 1);
+	robotHeadAppearance.setDiffuse(1, 1, 1);
+	robotHeadAppearance.setSpecular(1, 1, 1);
+	robotHeadAppearance.setShininess(40);
+	robotHeadAppearance.loadTexture("resources/images/kitkathead.png");
+	robotAndroidKitKat[this.robot.headApIndex] = robotHeadAppearance;
+	robotAndroidKitKat[this.robot.antennaApIndex] = robotHeadAppearance;
+	robotAndroidKitKat[this.robot.antennaTopApIndex] = robotHeadAppearance;
+	robotAndroidKitKat[this.robot.armTopApIndex] = robotHeadAppearance;
+	
+	robotEyeAppearance = new CGFappearance(this);
+	robotEyeAppearance.setAmbient(0, 0, 0);
+	robotEyeAppearance.setDiffuse(0, 0, 0);
+	robotEyeAppearance.setSpecular(0.2, 0.2, 0.2);
+	robotEyeAppearance.setShininess(10);
+	robotAndroidKitKat[this.robot.eyeApIndex] = robotEyeAppearance;
+	robotAndroidKitKat[this.robot.eyeFrontApIndex] = robotEyeAppearance;
+	
+	robotWheelAppearance = new CGFappearance(this);
+	robotWheelAppearance.setAmbient(0.4, 0.4, 0.4);
+	robotWheelAppearance.setDiffuse(0.6, 0.6, 0.6);
+	robotWheelAppearance.setSpecular(0.2, 0.2, 0.2);
+	robotWheelAppearance.setShininess(10);
+	robotWheelAppearance.loadTexture("resources/images/wheel.png");
+	robotWheelAppearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
+	robotAndroidKitKat[this.robot.wheelApIndex] = robotWheelAppearance;
+	robotAndroidKitKat[this.robot.wheelSideApIndex] = robotWheelAppearance;
+	
+	robotArmsAppearance = new CGFappearance(this);
+	robotArmsAppearance.setAmbient(1, 1, 1);
+	robotArmsAppearance.setDiffuse(1, 1, 1);
+	robotArmsAppearance.setSpecular(1, 1, 1);
+	robotArmsAppearance.setShininess(40);
+	robotArmsAppearance.loadTexture("resources/images/kitkatarm.png");
+	robotAndroidKitKat[this.robot.armsApIndex] = robotArmsAppearance;
+
+	this.androidKitKatIndex = texSet.length;
+	texSet.push(robotAndroidKitKat);
+	
+	// Android Lollipop
+	robotAndroidLollipop = [];
+	robotGeneralAppearance = new CGFappearance(this);
+	robotGeneralAppearance.setAmbient(102/255/1.3, 1/1.3, 0);
+	robotGeneralAppearance.setDiffuse(102/255/1.3, 1/1.3, 0);
+	robotGeneralAppearance.setSpecular(1, 1, 1);
+	robotGeneralAppearance.setShininess(400);
+	robotAndroidLollipop[this.robot.bodyApIndex] = robotGeneralAppearance;
+	robotAndroidLollipop[this.robot.armsApIndex] = robotGeneralAppearance;
+	robotAndroidLollipop[this.robot.armTopApIndex] = robotGeneralAppearance;
+	robotAndroidLollipop[this.robot.headApIndex] = robotGeneralAppearance;
+	
+	robotEyeAppearance = new CGFappearance(this);
+	robotEyeAppearance.setAmbient(0.8, 0.8, 0.8);
+	robotEyeAppearance.setDiffuse(0.8, 0.8, 0.8);
+	robotEyeAppearance.setSpecular(1, 1, 1);
+	robotEyeAppearance.setShininess(100);
+	robotAndroidLollipop[this.robot.eyeApIndex] = robotEyeAppearance;
+	robotAndroidLollipop[this.robot.eyeFrontApIndex] = robotEyeAppearance;
+	robotAndroidLollipop[this.robot.bodyTopApIndex] = robotEyeAppearance;
+	robotAndroidLollipop[this.robot.headBottomApIndex] = robotEyeAppearance;
+	robotAndroidLollipop[this.robot.antennaApIndex] = robotEyeAppearance;
+	robotAndroidLollipop[this.robot.antennaTopApIndex] = robotEyeAppearance;
+	
+	robotWheelAppearance = new CGFappearance(this);
+	robotWheelAppearance.setAmbient(0.4, 0.4, 0.4);
+	robotWheelAppearance.setDiffuse(0.6, 0.6, 0.6);
+	robotWheelAppearance.setSpecular(0.2, 0.2, 0.2);
+	robotWheelAppearance.setShininess(10);
+	robotWheelAppearance.loadTexture("resources/images/wheel.png");
+	robotWheelAppearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
+	robotAndroidLollipop[this.robot.wheelApIndex] = robotWheelAppearance;
+	robotAndroidLollipop[this.robot.wheelSideApIndex] = robotWheelAppearance;
+	
+	this.androidLollipopIndex = texSet.length;
+	texSet.push(robotAndroidLollipop);
+	
+	this.lollipopSet = [];
+	
+	lollipopTubeAppearance = new CGFappearance(this); //228 G: 235 B: 222
+	lollipopTubeAppearance.setAmbient(228/255, 235/255, 222/255);
+	lollipopTubeAppearance.setDiffuse(228/255, 235/255, 222/255);
+	lollipopTubeAppearance.setSpecular(228/255/2, 235/255/2, 222/255/2);
+	lollipopTubeAppearance.setShininess(40);
+	this.lollipopSet[this.robot.lollipopTubeIndex] = lollipopTubeAppearance;
+	this.lollipopSet[this.robot.lollipopSideIndex] = lollipopTubeAppearance;
+	
+	lollipopAppearance = new CGFappearance(this);
+	lollipopAppearance.setAmbient(1, 1, 1);
+	lollipopAppearance.setDiffuse(1, 1, 1);
+	lollipopAppearance.setSpecular(1, 1, 1);
+	lollipopAppearance.setShininess(400);
+	lollipopAppearance.loadTexture("resources/images/lollipop.png");
+	this.lollipopSet[this.robot.lollipopIndex] = lollipopAppearance;
 }
