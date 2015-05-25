@@ -25,11 +25,11 @@ var ANGLE_LIMIT = 0.1;
  	 	
  	this.defaultDelta = 0.3;
  	this.defaultSpeed = 2;
- 	this.defaultResistance = 0.5;
+ 	this.defaultResistance = 4;
  	this.defaultAcceleration = 3;
 
  	this.defaultAngleSpeed = 2;
- 	this.defaultAngleResistance = 1;
+ 	this.defaultAngleResistance = 4;
  	this.defaultAngleAcceleration = 0.8;
 
  	this.armDefaultSpeed = 0.02;
@@ -53,7 +53,7 @@ var ANGLE_LIMIT = 0.1;
  	this.objectSlices = 300;
  	this.objectStacks = 20;
  	
- 	this.sizeScale = 2;
+ 	this.sizeScale = 1;
  	 
  	this.circle = new MyCircle(this.scene, this.objectSlices);
  	this.cylinder = new MyCylinder(this.scene, this.objectSlices, this.objectStacks);
@@ -154,7 +154,7 @@ MyRobot.prototype.update = function(delta_t) {
 		this.x -= this.speed * delta_t/1000 * Math.sin(this.angle) * this.sizeScale;
 		angleShift = 0;
 	}
-	if (this.z < this.sizeScale)
+	if (this.z < this.sizeScale || this.z > 10.6-this.sizeScale)
 	{
 		this.z -= this.speed * delta_t/1000 * Math.cos(this.angle) * this.sizeScale;
 		angleShift = 0;

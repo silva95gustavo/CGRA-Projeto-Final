@@ -219,14 +219,14 @@ LightingScene.prototype.update = function(currTime) {
 	else
 		this.lights[1].disable();
 	
-	/*if(this.wKey != 0)
-		this.robot.move(0.2);
+	if(this.wKey != 0)
+		this.robot.accelerate(1);
 	if(this.sKey != 0)
-		this.robot.move(-0.2);
+		this.robot.accelerate(-1);
 	if(this.aKey != 0)
-		this.robot.angle += 0.1;
+		this.robot.rotate(0.7);
 	if(this.dKey != 0)
-		this.robot.angle -= 0.1;*/
+		this.robot.rotate(-0.7);
 }
 
 
@@ -323,13 +323,13 @@ LightingScene.prototype.display = function() {
 
 	// First Table
 	this.pushMatrix();
-		this.translate(5, 0, 8);
+		this.translate(5, 0, 12);
 		this.table.display();
 	this.popMatrix();
 
 	// Second Table
 	this.pushMatrix();
-		this.translate(12, 0, 8);
+		this.translate(12, 0, 12);
 		this.table.display();
 	this.popMatrix();
 
@@ -356,7 +356,7 @@ LightingScene.prototype.display = function() {
 		this.rotate(Math.PI / 2, 0, 1, 0);
 
 		//			               z           y          x
-		this.translate(-(8 + BOARD_WIDTH / 4), 0, 4 + BOARD_HEIGHT / 4);
+		this.translate(-(12 + BOARD_WIDTH / 4), 0, 4 + BOARD_HEIGHT / 4);
 
 		this.chair.display();
 	this.popMatrix();
@@ -366,7 +366,7 @@ LightingScene.prototype.display = function() {
 		this.rotate(Math.PI / 2, 0, 1, 0);
 
 		//			               z           y          x
-		this.translate(-(8 + BOARD_WIDTH / 4), 0, 10.5 + BOARD_HEIGHT / 4);
+		this.translate(-(12 + BOARD_WIDTH / 4), 0, 10.5 + BOARD_HEIGHT / 4);
 		
 		this.chair.display();
 	this.popMatrix();
@@ -381,6 +381,7 @@ LightingScene.prototype.display = function() {
 	// Pillar
 	this.pushMatrix();
 		this.translate(0, 0, 16);
+		this.rotate(Math.PI, 0, 1, 0);
 		this.rotate(- Math.PI / 2, 1, 0, 0);
 		this.scale(1, 1, 8);
 		this.pillarAppearance.apply();
@@ -397,7 +398,7 @@ LightingScene.prototype.display = function() {
 
 	// Airplane
 	this.pushMatrix();
-		if(this.airplaneMovementStage == 0)
+		/*if(this.airplaneMovementStage == 0)
 		{
 			this.rotate(-Math.PI/2, 1, 0, 0);
 			this.rotate(-Math.PI/2, 0, 0, 1);
@@ -407,8 +408,11 @@ LightingScene.prototype.display = function() {
 		{
 			this.rotate(-Math.PI/2, 0, 1, 0);
 			this.translate(this.airplaneZ, this.airplaneY, -this.airplaneX-0.15);
-		}
+		}*/
 		
+		this.translate(4, 3.8, 12);
+		this.rotate(-Math.PI/2, 0, 1, 0);
+		this.rotate(-Math.PI/2, 1, 0, 0);
 		this.airplane.display();
 	this.popMatrix();
 

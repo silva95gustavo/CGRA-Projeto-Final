@@ -59,10 +59,7 @@ MyInterface.prototype.init = function(application) {
 	return true;
 };
 
-/**
- * processKeyboard
- * @param event {Event}
- */
+/*
 MyInterface.prototype.processKeyboard = function(event) {
 	// call CGFinterface default code (omit if you want to override)
 	CGFinterface.prototype.processKeyboard.call(this,event);
@@ -75,22 +72,22 @@ MyInterface.prototype.processKeyboard = function(event) {
 	{
 		case (87):
 		case (119):     // any 'W'
-			this.scene.robot.accelerate(this.scene.robot.defaultAcceleration);
+			//this.scene.robot.accelerate(this.scene.robot.defaultAcceleration);
 			break;
 		case (83):
 		case (115):     // any 'S'
-			this.scene.robot.accelerate(-this.scene.robot.defaultAcceleration);
+			//this.scene.robot.accelerate(-this.scene.robot.defaultAcceleration);
 			break;
 		case(65):
 		case(97):		// any 'A'
-			this.scene.robot.rotate(this.scene.robot.defaultAngleAcceleration);
+			//this.scene.robot.rotate(this.scene.robot.defaultAngleAcceleration);
 			break;
 		case(68):
 		case(100):		// any 'D'
-			this.scene.robot.rotate(-this.scene.robot.defaultAngleAcceleration);
+			//this.scene.robot.rotate(-this.scene.robot.defaultAngleAcceleration);
 		break;				
 	};
-};
+};*/
 
 MyInterface.prototype.processKeyDown = function(event) {
 	CGFinterface.prototype.processKeyDown.call(this,event);
