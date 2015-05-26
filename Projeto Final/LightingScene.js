@@ -63,7 +63,8 @@ LightingScene.prototype.init = function(application) {
 	this.robot.angleResistance = this.robot.defaultAngleResistance;
 	this.robotAppearances = [];
 	this.setRobotTex(this.robotAppearances);
-	this.robotAppearanceIndex = this.androidLollipopIndex;
+	this.robotSizeScale = 1;
+	this.robotAppearanceIndex = this.androidGreenIndex;
 	// this.androidGreenIndex
 	// this.androidICSIndex
 	// this.androidKitKatIndex
@@ -422,7 +423,7 @@ LightingScene.prototype.display = function() {
 
 	// Robot
 	this.pushMatrix();
-		this.robot.displayAppearance(this.robotAppearances[this.robotAppearanceIndex]);
+		this.robot.displayAppearance(this.robotAppearances[this.robotAppearanceIndex], this.robotSizeScale);
 		if(this.robotAppearanceIndex == this.androidLollipopIndex)
 			this.robot.displayLollipop(this.lollipopSet);
 	this.popMatrix();
