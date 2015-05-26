@@ -153,16 +153,38 @@ MyRobot.prototype.update = function(delta_t) {
 	this.z += this.speed * delta_t/1000 * Math.cos(this.angle) * this.sizeScale;
 
 	angleShift = this.speed*(delta_t/1000)*this.sizeScale/this.wheelDiameterScale;
-	if (this.x < this.sizeScale || this.x > 15 - this.sizeScale)
+	
+	if(this.x < this.bodyDiameterScale)
+	{
+		angleShift = 0;
+		this.x = this.bodyDiameterScale;
+	}
+	if(this.x > 15 - this.bodyDiameterScale)
+	{
+		angleShift = 0;
+		this.x = 15 - this.bodyDiameterScale;
+	}
+	if(this.z < this.bodyDiameterScale)
+	{
+		angleShift = 0;
+		this.z = this.bodyDiameterScale;
+	}
+	if(this.z > 10.6-this.bodyDiameterScale)
+	{
+		angleShift = 0;
+		this.z = 10.6-this.bodyDiameterScale;
+	}
+	
+	/*if (this.x < this.bodyDiameterScale || this.x > 15 - this.bodyDiameterScale)
 	{
 		this.x -= this.speed * delta_t/1000 * Math.sin(this.angle) * this.sizeScale;
 		angleShift = 0;
 	}
-	if (this.z < this.sizeScale || this.z > 10.6-this.sizeScale)
+	if (this.z < this.bodyDiameterScale || this.z > 10.6-this.bodyDiameterScale)
 	{
 		this.z -= this.speed * delta_t/1000 * Math.cos(this.angle) * this.sizeScale;
 		angleShift = 0;
-	}
+	}*/
 
  	this.rightWheelAngle += angleShift;
  	this.leftWheelAngle += angleShift;
@@ -524,8 +546,35 @@ MyRobot.prototype.displayLollipop = function(lollipopAppearanceSet) {
 	this.scene.popMatrix();
 }
 
-MyRobot.prototype.displayAppearance = function(appearanceSet) {
+MyRobot.prototype.updateVars = function(scale) {
+	this.sizeScale = scale;
+	 
+ 	this.bodyDiameterScale = this.sizeScale*0.8;
+ 	this.bodyHeightScale = 2*this.bodyDiameterScale/0.8;
+ 	
+ 	this.headToBodySpacing = this.bodyDiameterScale/8;
+ 	
+ 	this.armDiameterScale = this.bodyDiameterScale/5;
+ 	this.armHeightScale = this.bodyDiameterScale/(6/9);
+ 	this.armToBodySpacing = this.armDiameterScale + 1.1*this.bodyDiameterScale;
+ 	
+ 	this.antennaDiameterScale = this.bodyDiameterScale/20;
+ 	this.antennaHeightScale = this.bodyDiameterScale*1.4;
+ 	this.antennaHeightAdjustment = Math.cos(this.antennaLeanAngle)*this.antennaDiameterScale;
+ 	
+ 	this.eyeDiameterScale = 0.1*this.bodyDiameterScale;
+ 	this.eyeDepthScale = 0.84*this.bodyDiameterScale;
+ 	this.eyeHeightScale = (0.5)*this.bodyDiameterScale;
+ 	this.eyeToEyeDistance = (0.45)*this.bodyDiameterScale;
+ 	
+ 	this.wheelDiameterScale = 0.5*this.bodyDiameterScale;
+ 	this.wheelDepthScale = 0.2*this.bodyDiameterScale;
+}
 
+MyRobot.prototype.displayAppearance = function(appearanceSet, scale) {
+
+	this.updateVars(scale);
+	
 	this.scene.pushMatrix();
 	this.scene.translate(this.x, this.y, this.z);	
 	

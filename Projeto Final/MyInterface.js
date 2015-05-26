@@ -36,6 +36,17 @@ MyInterface.prototype.init = function(application) {
 	
 	var group=this.gui.addFolder("Luzes");
 	group.open();
+	
+	// this.scene.androidGreenIndex
+	// this.scene.androidICSIndex
+	// this.scene.androidKitKatIndex
+	// this.scene.androidLollipopIndex
+	this.gui.add(this.scene, 'robotAppearanceIndex', {green: this.scene.androidGreenIndex, 
+														ice_cream_sandwich: this.scene.androidICSIndex, 
+														kitkat: this.scene.androidKitKatIndex, 
+														lollipop: this.scene.androidLollipopIndex});
+	
+	this.gui.add(this.scene, 'robotSizeScale', 0.5, 4);
 
 	// add two check boxes to the group. The identifiers must be members variables of the scene initialized in scene.init as boolean
 	// e.g. this.option1=true; this.option2=false;
