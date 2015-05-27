@@ -10,6 +10,8 @@ var ANGLE_LIMIT = 0.1;
  function MyRobot(scene, slices, stacks) {
  	CGFobject.call(this,scene);
  	
+ 	this.time = 0;
+ 	
  	this.bodyApIndex = 0;
  	this.bodyTopApIndex = 1;
  	this.eyeApIndex = 2;
@@ -138,6 +140,8 @@ MyRobot.prototype.accelerate = function(acceleration) {
 
 MyRobot.prototype.update = function(delta_t) {
 
+	this.time += delta_t;
+	
 	this.angle += this.angleSpeed * delta_t/1000;
 	
 	angleShift = this.angleSpeed*(delta_t/1000)*this.bodyDiameterScale/this.wheelDiameterScale;
@@ -188,39 +192,10 @@ MyRobot.prototype.update = function(delta_t) {
 
  	this.rightWheelAngle += angleShift;
  	this.leftWheelAngle += angleShift;
- 	
- 	if(this.speed == 0)
- 	{
- 		if(this.rightArmAngle != 0) {
- 			newAng = this.rightArmAngle-this.armRotationSlowingFactor;
- 	 		if(Math.abs(newAng) != newAng)
- 	 			newAng = 0;
- 	 		this.rightArmAngle=newAng;
- 		}
- 		if(this.leftArmAngle != 0) {
- 			newAng = this.leftArmAngle-this.armRotationSlowingFactor;
- 	 		if(Math.abs(newAng) != newAng)
- 	 			newAng = 0;
- 	 		this.leftArmAngle=newAng;
- 		}
- 	}
- 	else
- 	{
- 		if(this.armRotationSpeed != 0)
- 		{
- 			newAng = this.rightArmAngle+this.armRotationSpeed*this.speed;
- 			if(newAng < -this.armRotaionSpan) {
- 				this.armRotationSpeed = -this.armRotationSpeed;
- 				newAng = -this.armRotaionSpan;
- 			} else if(newAng > this.armRotaionSpan) {
- 				this.armRotationSpeed = -this.armRotationSpeed;
- 				newAng = this.armRotaionSpan;
- 			}
- 			this.rightArmAngle = newAng;
- 			this.leftArmAngle = -newAng;
- 		}
- 	}
- 	
+
+ 	angle = 0.2 * this.speed * Math.sin(0.005 * this.time);
+ 	this.rightArmAngle = angle;
+ 	this.leftArmAngle = -angle;
 	
 	this.speed -= this.speed * delta_t/1000 * this.resistance;
 
