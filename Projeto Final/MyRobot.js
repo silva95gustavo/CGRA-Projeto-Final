@@ -593,3 +593,7 @@ MyRobot.prototype.displayAppearance = function(appearanceSet, scale) {
 	 
 	 this.drawElements(this.primitiveType);
 }
+
+MyRobot.prototype.lerp = function(oldX, newX, alpha) {
+	return oldX + alpha * (newX - oldX);
+}
