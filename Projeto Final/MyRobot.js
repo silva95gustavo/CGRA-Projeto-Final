@@ -192,9 +192,14 @@ MyRobot.prototype.update = function(delta_t) {
  	this.rightWheelAngle += angleShift;
  	this.leftWheelAngle += angleShift;
 
- 	angle = 0.15 * this.speed * Math.sin(0.005 * this.time);
- 	this.rightArmAngle = angle;
- 	this.leftArmAngle = -angle;
+ 	switch(this.waveState)
+ 	{
+ 	case 0:
+ 		angle = 0.15 * this.speed * Math.sin(0.005 * this.time);
+ 	 	this.rightArmAngle = angle;
+ 	 	this.leftArmAngle = -angle;
+ 	 	break;
+ 	}
 	
 	this.speed -= this.speed * delta_t/1000 * this.resistance;
 
