@@ -169,10 +169,10 @@ MyRobot.prototype.update = function(delta_t) {
 		angleShift = 0;
 		this.z = this.bodyDiameterScale;
 	}
-	if(this.z > 10.6-this.bodyDiameterScale)
+	if(this.z > 10.47-this.bodyDiameterScale)
 	{
 		angleShift = 0;
-		this.z = 10.6-this.bodyDiameterScale;
+		this.z = 10.47-this.bodyDiameterScale;
 	}
 	
 	/*if (this.x < this.bodyDiameterScale || this.x > 15 - this.bodyDiameterScale)

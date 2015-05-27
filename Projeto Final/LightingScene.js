@@ -225,9 +225,9 @@ LightingScene.prototype.update = function(currTime) {
 		this.lights[1].disable();
 	
 	if(this.wKey != 0)
-		this.robot.accelerate(1);
+		this.robot.accelerate(0.7);
 	if(this.sKey != 0)
-		this.robot.accelerate(-1);
+		this.robot.accelerate(-0.7);
 	if(this.aKey != 0)
 		this.robot.rotate(0.7);
 	if(this.dKey != 0)
@@ -664,9 +664,9 @@ LightingScene.prototype.setRobotTex = function(texSet) {
 	robotAndroidLollipop[this.robot.antennaTopApIndex] = robotEyeAppearance;
 	
 	robotWheelAppearance = new CGFappearance(this);
-	robotWheelAppearance.setAmbient(0.4, 0.4, 0.4);
-	robotWheelAppearance.setDiffuse(0.6, 0.6, 0.6);
-	robotWheelAppearance.setSpecular(0.2, 0.2, 0.2);
+	robotWheelAppearance.setAmbient(1, 1, 1);
+	robotWheelAppearance.setDiffuse(1, 1, 1);
+	robotWheelAppearance.setSpecular(0.3, 0.3, 0.3);
 	robotWheelAppearance.setShininess(10);
 	robotWheelAppearance.loadTexture("resources/images/wheel.png");
 	robotWheelAppearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");
