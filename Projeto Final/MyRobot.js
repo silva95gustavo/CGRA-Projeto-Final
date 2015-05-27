@@ -193,7 +193,7 @@ MyRobot.prototype.update = function(delta_t) {
  	this.rightWheelAngle += angleShift;
  	this.leftWheelAngle += angleShift;
 
- 	angle = 0.2 * this.speed * Math.sin(0.005 * this.time);
+ 	angle = 0.15 * this.speed * Math.sin(0.005 * this.time);
  	this.rightArmAngle = angle;
  	this.leftArmAngle = -angle;
 	
