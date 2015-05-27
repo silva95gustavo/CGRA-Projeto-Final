@@ -592,3 +592,8 @@ MyRobot.prototype.displayAppearance = function(appearanceSet, scale) {
 	 
 	 this.drawElements(this.primitiveType);
 }
+
+MyRobot.prototype.lerp = function(oldX, newX, alpha) {
+	// return oldX + alpha * (newX - oldX); Imprecise method which does not guarantee x = newX when alpha = 1
+	return (1 - alpha) * oldX + alpha * newX;
+}
