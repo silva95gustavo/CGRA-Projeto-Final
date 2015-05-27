@@ -70,7 +70,7 @@ MyInterface.prototype.init = function(application) {
 	return true;
 };
 
-/*
+
 MyInterface.prototype.processKeyboard = function(event) {
 	// call CGFinterface default code (omit if you want to override)
 	CGFinterface.prototype.processKeyboard.call(this,event);
@@ -81,24 +81,12 @@ MyInterface.prototype.processKeyboard = function(event) {
 	// for better cross-browser support, you may also check suggestions on using event.which in http://www.w3schools.com/jsref/event_key_keycode.asp
 	switch (event.keyCode)
 	{
-		case (87):
-		case (119):     // any 'W'
-			//this.scene.robot.accelerate(this.scene.robot.defaultAcceleration);
-			break;
-		case (83):
-		case (115):     // any 'S'
-			//this.scene.robot.accelerate(-this.scene.robot.defaultAcceleration);
-			break;
-		case(65):
-		case(97):		// any 'A'
-			//this.scene.robot.rotate(this.scene.robot.defaultAngleAcceleration);
-			break;
-		case(68):
-		case(100):		// any 'D'
-			//this.scene.robot.rotate(-this.scene.robot.defaultAngleAcceleration);
-		break;				
+		case (79):
+		case (111):     // any 'O'
+			this.scene.robot.wave();
+			break;				
 	};
-};*/
+};
 
 MyInterface.prototype.processKeyDown = function(event) {
 	CGFinterface.prototype.processKeyDown.call(this,event);

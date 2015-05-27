@@ -99,10 +99,20 @@ var ANGLE_LIMIT = 0.1;
  	this.lollipopTubeIndex = 0;
  	this.lollipopIndex = 1;
  	this.lollipopSideIndex = 2;
+ 	
+ 	this.waveState = 0;	// 0 - normal arm movement
+ 						// 1 - Interpolate arms to correct position
+ 						// 2 - Wave arm
+ 						// 3 - Interpolate arms to "normal" position
  };
 
  MyRobot.prototype = Object.create(CGFobject.prototype);
  MyRobot.prototype.constructor = MyRobot;
+ 
+MyRobot.prototype.wave = function() {
+	if(this.waveState == 0)
+		this.waveState = 1;
+};
 
  MyRobot.prototype.initBuffers = function() {
 	 
@@ -173,22 +183,11 @@ MyRobot.prototype.update = function(delta_t) {
 		angleShift = 0;
 		this.z = this.bodyDiameterScale;
 	}
-	if(this.z > 10.6-this.bodyDiameterScale)
+	if(this.z > 10.47-this.bodyDiameterScale)
 	{
 		angleShift = 0;
-		this.z = 10.6-this.bodyDiameterScale;
+		this.z = 10.47-this.bodyDiameterScale;
 	}
-	
-	/*if (this.x < this.bodyDiameterScale || this.x > 15 - this.bodyDiameterScale)
-	{
-		this.x -= this.speed * delta_t/1000 * Math.sin(this.angle) * this.sizeScale;
-		angleShift = 0;
-	}
-	if (this.z < this.bodyDiameterScale || this.z > 10.6-this.bodyDiameterScale)
-	{
-		this.z -= this.speed * delta_t/1000 * Math.cos(this.angle) * this.sizeScale;
-		angleShift = 0;
-	}*/
 
  	this.rightWheelAngle += angleShift;
  	this.leftWheelAngle += angleShift;
