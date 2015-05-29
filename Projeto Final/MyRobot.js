@@ -56,44 +56,23 @@ var ANGLE_LIMIT = 0.1;
  	this.objectStacks = 20;
  	
  	this.sizeScale = 1;
+ 	
+ 	this.updateVars(this.sizeScale);
  	 
  	this.circle = new MyCircle(this.scene, this.objectSlices);
  	this.cylinder = new MyCylinder(this.scene, this.objectSlices, this.objectStacks);
  	this.hsphere = new MyHalfSphere(this.scene, this.objectSlices, this.objectStacks);
  	
- 	//this.body = new MyCylinderTopped(this.scene, this.objectSlices, this.objectStacks);
- 	this.bodyDiameterScale = this.sizeScale*0.8;
- 	this.bodyHeightScale = 2*this.bodyDiameterScale/0.8;
- 	
- 	//this.head = new MyHalfSphere(this.scene, this.objectSlices, this.objectStacks);
- 	this.headToBodySpacing = this.bodyDiameterScale/8;
- 	
- 	//this.leftArm = new MyCylinderTopped(this.scene, this.objectSlices, this.objectStacks); 	
- 	//this.rightArm = new MyCylinderTopped(this.scene, this.objectSlices, this.objectStacks);
- 	this.armDiameterScale = this.bodyDiameterScale/5;
- 	this.armHeightScale = this.bodyDiameterScale/(6/9);
- 	this.armToBodySpacing = this.armDiameterScale + 1.1*this.bodyDiameterScale;
  	this.leftArmAngle = Math.PI/4;
+ 	this.leftArmAngleLower = this.leftArmAngle;
  	this.rightArmAngle = Math.PI/4;
+ 	this.rightArmAngleLower = this.rightArmAngle;
  	this.waveAngle = 0;
+ 	this.waveAngleLower = 0;
  	
- 	//this.armEnd = new MyHalfSphere(this.scene, this.objectSlices, this.objectStacks);
  	this.armEndHeightScale = 1;
  	
- 	//this.antenna = new MyCylinderTopped(this.scene, this.objectSlices, this.objectStacks);
- 	this.antennaDiameterScale = this.bodyDiameterScale/20;
- 	this.antennaHeightScale = this.bodyDiameterScale*1.4//1.25;
- 	this.antennaLeanAngle = Math.PI/7;
- 	this.antennaHeightAdjustment = Math.cos(this.antennaLeanAngle)*this.antennaDiameterScale;
- 	
- 	this.eyeDiameterScale = 0.1*this.bodyDiameterScale;
- 	this.eyeDepthScale = 0.84*this.bodyDiameterScale;
- 	this.eyeHeightScale = (0.5)*this.bodyDiameterScale;
- 	this.eyeToEyeDistance = (0.45)*this.bodyDiameterScale;
- 	
  	this.wheel = new MyRobotWheel(this.scene, this.objectSlices, this.objectStacks);
- 	this.wheelDiameterScale = 0.5*this.bodyDiameterScale;
- 	this.wheelDepthScale = 0.2*this.bodyDiameterScale;
  	this.leftWheelAngle = 0;
  	this.rightWheelAngle = 0;
  	
@@ -206,15 +185,32 @@ MyRobot.prototype.update = function(delta_t) {
  	{
  	case 0:
  		this.waveAngle = 0;
- 		angle = 0.15 * this.speed * Math.sin(0.005 * this.time);
+ 		angle = 0.11 * this.speed * Math.sin(0.005 * this.time);
  	 	this.rightArmAngle = angle;
+ 	 	this.rightArmAngleLower = this.rightArmAngle;
+ 	 	if(this.rightArmAngle > 0)
+ 	 		this.rightArmAngleLower += 0.7*this.rightArmAngle;
+ 	 	/*else
+ 	 		this.rightArmAngleLower -= 0.1*this.rightArmAngle;*/
+ 	 	
  	 	this.leftArmAngle = -angle;
+ 	 	this.leftArmAngleLower = this.leftArmAngle;
+ 	 	if(this.leftArmAngle > 0)
+ 	 		this.leftArmAngleLower += 0.7*this.leftArmAngle;
+ 	 	/*else
+ 	 		this.leftArmAngleLower -= 0.1*this.leftArmAngle;*/
+ 	 	
  	 	break;
  	case 1:
- 		this.waveAngle = 0;
  		timeDiff = this.time - this.animTimeStart;
- 		this.rightArmAngle = this.lerp(this.rightArmStart, Math.PI, timeDiff/1000);
+ 		this.waveAngle = this.lerp(0, 0.9, timeDiff/1000);
+ 		this.waveAngleLower = this.lerp(0, 3*Math.PI/4, timeDiff/1000);
+ 		this.rightArmAngle = this.lerp(this.rightArmStart, 0, timeDiff/1000);
  		this.leftArmAngle = this.lerp(this.leftArmStart, 0, timeDiff/1000);
+ 		
+ 		this.leftArmAngleLower = this.leftArmAngle;
+ 	 	this.rightArmAngleLower = this.rightArmAngle;
+ 		
  		if(timeDiff > 1000)
  		{
  			this.animTimeStart = this.time;
@@ -223,7 +219,9 @@ MyRobot.prototype.update = function(delta_t) {
  		break;
  	case 2:
  		timeDiff = this.time - this.animTimeStart;
- 		this.waveAngle = (Math.PI/4)*((Math.sin(this.lerp(0, 3, timeDiff/3000)*2*Math.PI + 3*Math.PI/2) + 1)/2);
+ 		this.waveAngle = 0.9;
+ 		this.waveAngleLower = 3*Math.PI/4 + (Math.PI/6)*((Math.sin(this.lerp(0, 3, timeDiff/3000)*2*Math.PI + 3*Math.PI/2) + 1)/2);
+ 		
  		if(timeDiff > 3000)
  		{
  			this.waveState = 3;
@@ -233,15 +231,22 @@ MyRobot.prototype.update = function(delta_t) {
  		}
  		break;
  	case 3:
- 		this.waveAngle = 0;
  		angle = 0.15 * this.speed * Math.sin(0.005 * this.time);
  		timeDiff = this.time - this.animTimeStart;
  		this.rightArmAngle = this.lerp(this.rightArmStart, angle, timeDiff/1000);
  		this.leftArmAngle = this.lerp(this.leftArmStart, -angle, timeDiff/1000);
+ 		this.waveAngle = this.lerp(0.9, 0, timeDiff/1000);
+ 		this.waveAngleLower = this.lerp(3*Math.PI/4, 0, timeDiff/1000);
+ 		
+ 		this.leftArmAngleLower = this.leftArmAngle;
+ 	 	this.rightArmAngleLower = this.rightArmAngle;
+ 		
  		if(timeDiff > 1000)
  		{
  			this.animTimeStart = this.time;
  			this.waveState = 0;
+ 	 		this.waveAngle = 0;
+ 	 		this.waveAngleLower = 0;
  		}
  		break;
  	}
@@ -355,7 +360,7 @@ MyRobot.prototype.displayMoveHead = function() {
  
 MyRobot.prototype.displayArms = function(sideTex, topTex) {
 
-	 // Left arm
+	 // Left arm upper
 	 this.scene.pushMatrix();
 	 	this.scene.translate(this.armToBodySpacing*Math.cos(-this.angle), this.wheelDiameterScale + this.bodyHeightScale-this.armHeightScale, this.armToBodySpacing*Math.sin(-this.angle));
 	 	this.scene.rotate(this.angle+Math.PI, 0, 1, 0);
@@ -387,7 +392,40 @@ MyRobot.prototype.displayArms = function(sideTex, topTex) {
 		this.scene.popMatrix();
 	 this.scene.popMatrix();
 	 
-	 // Right arm
+	// Left arm lower
+	 this.scene.pushMatrix();
+	 	this.scene.translate(this.armToBodySpacing*Math.cos(-this.angle), this.wheelDiameterScale + this.bodyHeightScale-2*this.armHeightScale + this.armHeightScale*(1-Math.cos(this.leftArmAngle)), this.armToBodySpacing*Math.sin(-this.angle));
+	 	this.scene.rotate(this.angle+Math.PI, 0, 1, 0);
+	 	this.scene.translate(0, 0, -this.armHeightScale*Math.sin(this.leftArmAngle));
+	 	this.scene.translate(0, this.armHeightScale, 0);
+	 	this.scene.rotate(this.leftArmAngleLower, 1, 0, 0);
+	 	this.scene.translate(0, -this.armHeightScale, 0);
+	 	
+	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
+	 	this.scene.scale(this.armDiameterScale, this.armDiameterScale, this.armHeightScale);
+ 		if (typeof sideTex != "undefined") {
+ 			sideTex.apply();
+ 		}
+	 	this.cylinder.display();
+	 	this.scene.pushMatrix();
+			this.scene.rotate(Math.PI, 1, 0, 0);
+			this.scene.scale(1, 1, this.armDiameterScale/this.armHeightScale);
+	 		if (typeof topTex != "undefined") {
+	 			topTex.apply();
+	 		}
+			this.hsphere.display();
+		this.scene.popMatrix();
+		this.scene.pushMatrix();
+			this.scene.translate(0, 0, 1);
+			this.scene.scale(1, 1, this.armDiameterScale/this.armHeightScale);
+	 		if (typeof topTex != "undefined") {
+	 			topTex.apply();
+	 		}
+			this.hsphere.display();
+		this.scene.popMatrix();
+	 this.scene.popMatrix();
+	 
+	 // Right arm upper
 	 this.scene.pushMatrix();
 	 	this.scene.translate(this.armToBodySpacing*Math.cos(-this.angle + Math.PI), this.wheelDiameterScale+this.bodyHeightScale-this.armHeightScale, this.armToBodySpacing*Math.sin(-this.angle + Math.PI));
 
@@ -395,6 +433,44 @@ MyRobot.prototype.displayArms = function(sideTex, topTex) {
 	 	this.scene.translate(0, this.armHeightScale, 0);
 	 	this.scene.rotate(this.rightArmAngle, 1, 0, 0);
 	 	this.scene.rotate(this.waveAngle, 0, 0, 1);
+	 	this.scene.translate(0, -this.armHeightScale, 0);
+	 	
+	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
+	 	this.scene.scale(this.armDiameterScale, this.armDiameterScale, this.armHeightScale);
+ 		if (typeof sideTex != "undefined") {
+ 			sideTex.apply();
+ 		}
+	 	this.cylinder.display();
+	 	//this.leftArm.display();
+	 	this.scene.pushMatrix();
+	 		this.scene.rotate(Math.PI, 1, 0, 0);
+	 		this.scene.scale(1, 1, this.armDiameterScale/this.armHeightScale);
+	 		if (typeof topTex != "undefined") {
+	 			topTex.apply();
+	 		}
+	 		this.hsphere.display();
+	 		//this.armEnd.display();
+	 	this.scene.popMatrix();
+	 	this.scene.pushMatrix();
+	 		this.scene.translate(0, 0, 1);
+	 		this.scene.scale(1, 1, this.armDiameterScale/this.armHeightScale);
+	 		if (typeof topTex != "undefined") {
+	 			topTex.apply();
+	 		}
+	 		this.hsphere.display();
+	 		//this.armEnd.display();
+	 	this.scene.popMatrix();
+	 this.scene.popMatrix();
+	 
+	// Right arm lower
+	 this.scene.pushMatrix();
+	 	this.scene.rotate(this.angle+Math.PI, 0, 1, 0);
+	 	this.scene.translate(Math.sin(this.waveAngle)*this.armHeightScale + this.armToBodySpacing,
+	 			this.wheelDiameterScale+this.bodyHeightScale-2*this.armHeightScale + this.armHeightScale*(1-Math.cos(this.rightArmAngle)) + this.armHeightScale*(1-Math.cos(this.waveAngle)),
+	 			this.armHeightScale*Math.sin(this.leftArmAngle));
+	 	this.scene.translate(0, this.armHeightScale, 0);
+	 	this.scene.rotate(this.rightArmAngleLower, 1, 0, 0);
+	 	this.scene.rotate(this.waveAngleLower, 0, 0, 1);
 	 	this.scene.translate(0, -this.armHeightScale, 0);
 	 	
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
@@ -533,9 +609,9 @@ MyRobot.prototype.displayLollipop = function(lollipopAppearanceSet) {
 	
 	this.scene.pushMatrix();
 	this.scene.translate(this.x, this.y, this.z);
-	this.scene.translate(this.armToBodySpacing*Math.cos(-this.angle), this.wheelDiameterScale + this.bodyHeightScale-this.armHeightScale, this.armToBodySpacing*Math.sin(-this.angle));
+	this.scene.translate(this.armToBodySpacing*Math.cos(-this.angle), this.wheelDiameterScale + this.bodyHeightScale-2*this.armHeightScale, this.armToBodySpacing*Math.sin(-this.angle));
 	this.scene.rotate(this.angle+Math.PI, 0, 1, 0);
-	this.scene.translate(0, this.armHeightScale*(1-Math.cos(this.leftArmAngle)), -this.armHeightScale*Math.sin(this.leftArmAngle));
+	this.scene.translate(0, this.armHeightScale*(1-Math.cos(this.leftArmAngle)) + this.armHeightScale*(1-Math.cos(this.leftArmAngleLower)), -this.armHeightScale*Math.sin(this.leftArmAngle)-this.armHeightScale*Math.sin(this.leftArmAngleLower));
 	this.scene.rotate(this.leftArmAngle, 1, 0, 0);
 	this.scene.rotate(Math.PI/4, 0, 0, 1);
 	
@@ -580,7 +656,7 @@ MyRobot.prototype.updateVars = function(scale) {
  	this.headToBodySpacing = this.bodyDiameterScale/8;
  	
  	this.armDiameterScale = this.bodyDiameterScale/5;
- 	this.armHeightScale = this.bodyDiameterScale/(6/9);
+ 	this.armHeightScale = this.bodyDiameterScale*(9/12);
  	this.armToBodySpacing = this.armDiameterScale + 1.1*this.bodyDiameterScale;
  	
  	this.antennaDiameterScale = this.bodyDiameterScale/20;
