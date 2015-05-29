@@ -163,7 +163,7 @@ LightingScene.prototype.init = function(application) {
 	this.airplaneAppearance.setSpecular(0.1, 0.1, 0.1);
 	this.airplaneAppearance.setShininess(10);
 
-	this.setUpdatePeriod(30);
+	this.setUpdatePeriod(10);
 };
 
 LightingScene.prototype.initCameras = function() {
