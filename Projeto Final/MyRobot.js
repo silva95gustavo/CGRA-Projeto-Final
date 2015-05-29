@@ -609,9 +609,9 @@ MyRobot.prototype.displayLollipop = function(lollipopAppearanceSet) {
 	
 	this.scene.pushMatrix();
 	this.scene.translate(this.x, this.y, this.z);
-	this.scene.translate(this.armToBodySpacing*Math.cos(-this.angle), this.wheelDiameterScale + this.bodyHeightScale-this.armHeightScale, this.armToBodySpacing*Math.sin(-this.angle));
+	this.scene.translate(this.armToBodySpacing*Math.cos(-this.angle), this.wheelDiameterScale + this.bodyHeightScale-2*this.armHeightScale, this.armToBodySpacing*Math.sin(-this.angle));
 	this.scene.rotate(this.angle+Math.PI, 0, 1, 0);
-	this.scene.translate(0, this.armHeightScale*(1-Math.cos(this.leftArmAngle)), -this.armHeightScale*Math.sin(this.leftArmAngle));
+	this.scene.translate(0, this.armHeightScale*(1-Math.cos(this.leftArmAngle)) + this.armHeightScale*(1-Math.cos(this.leftArmAngleLower)), -this.armHeightScale*Math.sin(this.leftArmAngle)-this.armHeightScale*Math.sin(this.leftArmAngleLower));
 	this.scene.rotate(this.leftArmAngle, 1, 0, 0);
 	this.scene.rotate(Math.PI/4, 0, 0, 1);
 	
