@@ -43,7 +43,8 @@ LightingScene.prototype.init = function(application) {
 	this.table = new MyTable(this);
 	this.floor = new MyQuad(this, 0, 10, 0, 12);
 	this.landscape = new MyQuad(this, 0, 1, 0, 1);
-	this.leftWall = new MyQuad(this, -0.75, 1.75, -0.25, 1.25);
+	//this.leftWall = new MyQuad(this, -0.75, 1.75, -0.25, 1.25);
+	this.leftWall = new MyWallWithWindow(this, 10, -0.75, 1.75, -0.25, 1.25);
 	this.wall = new Plane(this);
 	this.boardA = new Plane(this, BOARD_A_DIVISIONS, -0.25, 1.25, 0, 1);
 	this.boardB = new Plane(this, BOARD_B_DIVISIONS);
@@ -225,9 +226,9 @@ LightingScene.prototype.update = function(currTime) {
 		this.lights[1].disable();
 	
 	if(this.wKey != 0)
-		this.robot.accelerate(1);
+		this.robot.accelerate(0.7);
 	if(this.sKey != 0)
-		this.robot.accelerate(-1);
+		this.robot.accelerate(-0.7);
 	if(this.aKey != 0)
 		this.robot.rotate(0.7);
 	if(this.dKey != 0)
@@ -664,9 +665,9 @@ LightingScene.prototype.setRobotTex = function(texSet) {
 	robotAndroidLollipop[this.robot.antennaTopApIndex] = robotEyeAppearance;
 	
 	robotWheelAppearance = new CGFappearance(this);
-	robotWheelAppearance.setAmbient(0.4, 0.4, 0.4);
-	robotWheelAppearance.setDiffuse(0.6, 0.6, 0.6);
-	robotWheelAppearance.setSpecular(0.2, 0.2, 0.2);
+	robotWheelAppearance.setAmbient(1, 1, 1);
+	robotWheelAppearance.setDiffuse(1, 1, 1);
+	robotWheelAppearance.setSpecular(0.3, 0.3, 0.3);
 	robotWheelAppearance.setShininess(10);
 	robotWheelAppearance.loadTexture("resources/images/wheel.png");
 	robotWheelAppearance.setTextureWrap("CLAMP_TO_EDGE", "CLAMP_TO_EDGE");

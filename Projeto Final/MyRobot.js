@@ -75,6 +75,7 @@ var ANGLE_LIMIT = 0.1;
  	this.armToBodySpacing = this.armDiameterScale + 1.1*this.bodyDiameterScale;
  	this.leftArmAngle = Math.PI/4;
  	this.rightArmAngle = Math.PI/4;
+ 	this.waveAngle = 0;
  	
  	//this.armEnd = new MyHalfSphere(this.scene, this.objectSlices, this.objectStacks);
  	this.armEndHeightScale = 1;
@@ -99,10 +100,29 @@ var ANGLE_LIMIT = 0.1;
  	this.lollipopTubeIndex = 0;
  	this.lollipopIndex = 1;
  	this.lollipopSideIndex = 2;
+ 	
+ 	this.waveState = 0;	// 0 - normal arm movement
+ 						// 1 - Interpolate arms to correct position
+ 						// 2 - Wave arm
+ 						// 3 - Interpolate arms to "normal" position
+ 	
+ 	this.rightArmStart;
+ 	this.leftArmStart;
+ 	this.animTimeStart;
  };
 
  MyRobot.prototype = Object.create(CGFobject.prototype);
  MyRobot.prototype.constructor = MyRobot;
+ 
+MyRobot.prototype.wave = function() {
+	if(this.waveState == 0)
+	{
+		this.waveState = 1;
+		this.rightArmStart = this.rightArmAngle;
+		this.leftArmStart = this.leftArmAngle;
+		this.animTimeStart = this.time;
+	}
+};
 
  MyRobot.prototype.initBuffers = function() {
 	 
@@ -173,29 +193,58 @@ MyRobot.prototype.update = function(delta_t) {
 		angleShift = 0;
 		this.z = this.bodyDiameterScale;
 	}
-	if(this.z > 10.6-this.bodyDiameterScale)
+	if(this.z > 10.47-this.bodyDiameterScale)
 	{
 		angleShift = 0;
-		this.z = 10.6-this.bodyDiameterScale;
+		this.z = 10.47-this.bodyDiameterScale;
 	}
-	
-	/*if (this.x < this.bodyDiameterScale || this.x > 15 - this.bodyDiameterScale)
-	{
-		this.x -= this.speed * delta_t/1000 * Math.sin(this.angle) * this.sizeScale;
-		angleShift = 0;
-	}
-	if (this.z < this.bodyDiameterScale || this.z > 10.6-this.bodyDiameterScale)
-	{
-		this.z -= this.speed * delta_t/1000 * Math.cos(this.angle) * this.sizeScale;
-		angleShift = 0;
-	}*/
 
  	this.rightWheelAngle += angleShift;
  	this.leftWheelAngle += angleShift;
 
- 	angle = 0.15 * this.speed * Math.sin(0.005 * this.time);
- 	this.rightArmAngle = angle;
- 	this.leftArmAngle = -angle;
+ 	switch(this.waveState)
+ 	{
+ 	case 0:
+ 		this.waveAngle = 0;
+ 		angle = 0.15 * this.speed * Math.sin(0.005 * this.time);
+ 	 	this.rightArmAngle = angle;
+ 	 	this.leftArmAngle = -angle;
+ 	 	break;
+ 	case 1:
+ 		this.waveAngle = 0;
+ 		timeDiff = this.time - this.animTimeStart;
+ 		this.rightArmAngle = this.lerp(this.rightArmStart, Math.PI, timeDiff/1000);
+ 		this.leftArmAngle = this.lerp(this.leftArmStart, 0, timeDiff/1000);
+ 		if(timeDiff > 1000)
+ 		{
+ 			this.animTimeStart = this.time;
+ 			this.waveState = 2;
+ 		}
+ 		break;
+ 	case 2:
+ 		timeDiff = this.time - this.animTimeStart;
+ 		this.waveAngle = (Math.PI/4)*((Math.sin(this.lerp(0, 3, timeDiff/3000)*2*Math.PI + 3*Math.PI/2) + 1)/2);
+ 		if(timeDiff > 3000)
+ 		{
+ 			this.waveState = 3;
+ 			this.rightArmStart = this.rightArmAngle;
+ 			this.leftArmStart = this.leftArmAngle;
+ 			this.animTimeStart = this.time;
+ 		}
+ 		break;
+ 	case 3:
+ 		this.waveAngle = 0;
+ 		angle = 0.15 * this.speed * Math.sin(0.005 * this.time);
+ 		timeDiff = this.time - this.animTimeStart;
+ 		this.rightArmAngle = this.lerp(this.rightArmStart, angle, timeDiff/1000);
+ 		this.leftArmAngle = this.lerp(this.leftArmStart, -angle, timeDiff/1000);
+ 		if(timeDiff > 1000)
+ 		{
+ 			this.animTimeStart = this.time;
+ 			this.waveState = 0;
+ 		}
+ 		break;
+ 	}
 	
 	this.speed -= this.speed * delta_t/1000 * this.resistance;
 
@@ -345,6 +394,7 @@ MyRobot.prototype.displayArms = function(sideTex, topTex) {
 	 	this.scene.rotate(this.angle+Math.PI, 0, 1, 0);
 	 	this.scene.translate(0, this.armHeightScale, 0);
 	 	this.scene.rotate(this.rightArmAngle, 1, 0, 0);
+	 	this.scene.rotate(this.waveAngle, 0, 0, 1);
 	 	this.scene.translate(0, -this.armHeightScale, 0);
 	 	
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
