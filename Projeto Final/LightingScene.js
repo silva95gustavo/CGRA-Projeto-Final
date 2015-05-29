@@ -43,8 +43,11 @@ LightingScene.prototype.init = function(application) {
 	this.table = new MyTable(this);
 	this.floor = new MyQuad(this, 0, 10, 0, 12);
 	this.landscape = new MyQuad(this, 0, 1, 0, 1);
-	//this.leftWall = new MyQuad(this, -0.75, 1.75, -0.25, 1.25);
-	this.leftWall = new MyWallWithWindow(this, 10, -0.75, 1.75, -0.25, 1.25);
+	//this.leftWall = new Plane(this, 10, -0.75, 1.75, -0.25, 1.25);
+	this.leftWallTop = new Plane(this, 10, -0.75, 1.75, 0.70, 1.25);
+	this.leftWallLeft = new Plane(this, 10, -0.75, 0.032, 0.05, 0.7);
+	this.leftWallRight = new Plane(this, 10, 0.968, 1.75, 0.05, 0.7);
+	this.leftWallBottom = new Plane(this, 10, -0.75, 1.75, -0.25, 0.05);
 	this.wall = new Plane(this);
 	this.boardA = new Plane(this, BOARD_A_DIVISIONS, -0.25, 1.25, 0, 1);
 	this.boardB = new Plane(this, BOARD_B_DIVISIONS);
@@ -300,13 +303,53 @@ LightingScene.prototype.display = function() {
 	this.popMatrix();
 	this.gl.clear(this.gl.DEPTH_BUFFER_BIT);
 	
-	// Left Wall
+	/*// Left Wall
 	this.pushMatrix();
 		this.translate(0, 4, 7.5);
 		this.rotate(90 * degToRad, 0, 1, 0);
 		this.scale(15, 8, 0.2);
 		this.windowAppearance.apply();
 		this.leftWall.display();
+	this.popMatrix();
+	this.gl.clear(this.gl.DEPTH_BUFFER_BIT);*/
+	
+	// Left Wall top
+	this.pushMatrix();
+		this.translate(0, 6.5, 7.5);
+		this.rotate(90 * degToRad, 0, 1, 0);
+		this.scale(15, 3, 0.2);
+		this.windowAppearance.apply();
+		this.leftWallTop.display();
+	this.popMatrix();
+	this.gl.clear(this.gl.DEPTH_BUFFER_BIT);
+	
+	// Left Wall bottom
+	this.pushMatrix();
+		this.translate(0, 1, 7.5);
+		this.rotate(90 * degToRad, 0, 1, 0);
+		this.scale(15, 2, 0.2);
+		this.windowAppearance.apply();
+		this.leftWallBottom.display();
+	this.popMatrix();
+	this.gl.clear(this.gl.DEPTH_BUFFER_BIT);
+	
+	// Left Wall left
+	this.pushMatrix();
+		this.translate(0, 3.5, 12.65);
+		this.rotate(90 * degToRad, 0, 1, 0);
+		this.scale(4.7, 3, 1);
+		this.windowAppearance.apply();
+		this.leftWallLeft.display();
+	this.popMatrix();
+	this.gl.clear(this.gl.DEPTH_BUFFER_BIT);
+	
+	// Left Wall right
+	this.pushMatrix();
+		this.translate(0, 3.5, 2.35);
+		this.rotate(90 * degToRad, 0, 1, 0);
+		this.scale(4.7, 3, 1);
+		this.windowAppearance.apply();
+		this.leftWallRight.display();
 	this.popMatrix();
 	this.gl.clear(this.gl.DEPTH_BUFFER_BIT);
 	
