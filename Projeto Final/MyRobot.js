@@ -10,6 +10,11 @@ var ANGLE_LIMIT = 0.1;
  function MyRobot(scene, slices, stacks) {
  	CGFobject.call(this,scene);
  	
+ 	// Acceleration given when forward/backward keys are pressed
+ 	this.defaultAcceleration = 0.7;
+ 	// Rotation acceleration given when left/right keys are pressed
+ 	this.defaultRotation = 0.7;
+ 	
  	this.time = 0;
  	
  	this.bodyApIndex = 0;
@@ -28,7 +33,6 @@ var ANGLE_LIMIT = 0.1;
  	this.defaultDelta = 0.3;
  	this.defaultSpeed = 2;
  	this.defaultResistance = 4;
- 	this.defaultAcceleration = 3;
 
  	this.defaultAngleSpeed = 2;
  	this.defaultAngleResistance = 4;
@@ -190,15 +194,15 @@ MyRobot.prototype.update = function(delta_t) {
  	 	this.rightArmAngleLower = this.rightArmAngle;
  	 	if(this.rightArmAngle > 0)
  	 		this.rightArmAngleLower += 0.7*this.rightArmAngle;
- 	 	/*else
- 	 		this.rightArmAngleLower -= 0.1*this.rightArmAngle;*/
+ 	 	else
+ 	 		this.rightArmAngleLower -= 0.1*this.rightArmAngle;
  	 	
  	 	this.leftArmAngle = -angle;
  	 	this.leftArmAngleLower = this.leftArmAngle;
  	 	if(this.leftArmAngle > 0)
  	 		this.leftArmAngleLower += 0.7*this.leftArmAngle;
- 	 	/*else
- 	 		this.leftArmAngleLower -= 0.1*this.leftArmAngle;*/
+ 	 	else
+ 	 		this.leftArmAngleLower -= 0.1*this.leftArmAngle;
  	 	
  	 	break;
  	case 1:
@@ -209,7 +213,16 @@ MyRobot.prototype.update = function(delta_t) {
  		this.leftArmAngle = this.lerp(this.leftArmStart, 0, timeDiff/1000);
  		
  		this.leftArmAngleLower = this.leftArmAngle;
+ 	 	if(this.leftArmAngle > 0)
+ 	 		this.leftArmAngleLower += 0.7*this.leftArmAngle;
+ 	 	else
+ 	 		this.leftArmAngleLower -= 0.1*this.leftArmAngle;
+ 	 	
  	 	this.rightArmAngleLower = this.rightArmAngle;
+ 	 	if(this.rightArmAngle > 0)
+ 	 		this.rightArmAngleLower += 0.7*this.rightArmAngle;
+ 	 	else
+ 	 		this.rightArmAngleLower -= 0.1*this.rightArmAngle;
  		
  		if(timeDiff > 1000)
  		{
@@ -239,7 +252,16 @@ MyRobot.prototype.update = function(delta_t) {
  		this.waveAngleLower = this.lerp(3*Math.PI/4, 0, timeDiff/1000);
  		
  		this.leftArmAngleLower = this.leftArmAngle;
+ 	 	if(this.leftArmAngle > 0)
+ 	 		this.leftArmAngleLower += 0.7*this.leftArmAngle;
+ 	 	else
+ 	 		this.leftArmAngleLower -= 0.1*this.leftArmAngle;
+ 	 	
  	 	this.rightArmAngleLower = this.rightArmAngle;
+ 	 	if(this.rightArmAngle > 0)
+ 	 		this.rightArmAngleLower += 0.7*this.rightArmAngle;
+ 	 	else
+ 	 		this.rightArmAngleLower -= 0.1*this.rightArmAngle;
  		
  		if(timeDiff > 1000)
  		{
@@ -674,10 +696,12 @@ MyRobot.prototype.updateVars = function(scale) {
 
 MyRobot.prototype.displayAppearance = function(appearanceSet, scale) {
 
-	this.updateVars(scale);
+	if(scale != this.sizeScale)
+		this.updateVars(scale);
 	
 	this.scene.pushMatrix();
-	this.scene.translate(this.x, this.y, this.z);	
+	//this.scene.translate(this.x, this.y, this.z);	
+	//this.scene.rotate(this.angle, 0, 1, 0);
 	
 	if (typeof appearanceSet != "undefined") // texture set defined
 	{

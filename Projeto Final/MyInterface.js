@@ -37,14 +37,7 @@ MyInterface.prototype.init = function(application) {
 	var group=this.gui.addFolder("Luzes");
 	group.open();
 	
-	// this.scene.androidGreenIndex
-	// this.scene.androidICSIndex
-	// this.scene.androidKitKatIndex
-	// this.scene.androidLollipopIndex
-	this.gui.add(this.scene, 'robotAppearanceIndex', {green: this.scene.androidGreenIndex, 
-														ice_cream_sandwich: this.scene.androidICSIndex, 
-														kitkat: this.scene.androidKitKatIndex, 
-														lollipop: this.scene.androidLollipopIndex});
+	this.gui.add(this.scene, 'currRobotAppearance', this.scene.robotAppearanceList);
 	
 	this.gui.add(this.scene, 'robotSizeScale', 0.5, 4);
 

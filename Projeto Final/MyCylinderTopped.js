@@ -34,7 +34,7 @@
 	{
 		this.vertices.push(1, 0, j / this.stacks);
 		this.normals.push(1, 0, 0);
-		this.texCoords.push(0, 0);
+		this.texCoords.push(0, j/this.stacks);
 		verts += 1;
 
 		for(i = 1; i <= this.slices; i++)
