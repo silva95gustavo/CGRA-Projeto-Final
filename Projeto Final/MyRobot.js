@@ -177,7 +177,7 @@ MyRobot.prototype.update = function(delta_t) {
 	
 	// Updates linear speed considering resistance
 	this.speed -= this.speed * delta_t/1000 * this.resistance;
- 	this.detectCollisions(angleShift);
+ 	this.detectCollisions();
 
 	// Updates robot wheel angle considering linear speed. After this, wheel angles match the movement completely
 	angleShift = this.speed*(delta_t/1000)*this.sizeScale/this.wheelDiameterScale;
@@ -190,28 +190,16 @@ MyRobot.prototype.update = function(delta_t) {
 		this.speed = 0;
  };
  
-MyRobot.prototype.detectCollisions = function(angleShift) {
+MyRobot.prototype.detectCollisions = function() {
 	// Simplified collision detection
 	if(this.x < this.bodyDiameterScale)
-	{
-		angleShift = 0;
 		this.x = this.bodyDiameterScale;
-	}
 	if(this.x > 15 - this.bodyDiameterScale)
-	{
-		angleShift = 0;
 		this.x = 15 - this.bodyDiameterScale;
-	}
 	if(this.z < this.bodyDiameterScale)
-	{
-		angleShift = 0;
 		this.z = this.bodyDiameterScale;
-	}
 	if(this.z > 10.47-this.bodyDiameterScale)
-	{
-		angleShift = 0;
 		this.z = 10.47-this.bodyDiameterScale;
-	}
 };
  
 MyRobot.prototype.armAnimation = function() {
@@ -416,7 +404,6 @@ MyRobot.prototype.displayArms = function(sideTex, topTex) {
 	 // Left arm upper
 	 this.scene.pushMatrix();
 	 	this.scene.translate(-this.armToBodySpacing, this.wheelDiameterScale + this.bodyHeightScale, 0);
-	 	this.scene.rotate(Math.PI, 0, 1, 0);
 	 	this.scene.rotate(-this.leftArmAngle+Math.PI, 1, 0, 0);
 	 	
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
@@ -447,8 +434,7 @@ MyRobot.prototype.displayArms = function(sideTex, topTex) {
 	 this.scene.pushMatrix();
 	 	this.scene.translate(-this.armToBodySpacing
 	 			, this.wheelDiameterScale + this.bodyHeightScale + this.armHeightScale*(-Math.cos(this.leftArmAngle))
-	 			, -this.armHeightScale*Math.sin(this.leftArmAngle));
-	 	this.scene.rotate(Math.PI, 0, 1, 0);
+	 			, this.armHeightScale*Math.sin(this.leftArmAngle));
 	 	this.scene.rotate(Math.PI-this.leftArmAngleLower, 1, 0, 0);
 	 	
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
@@ -478,7 +464,6 @@ MyRobot.prototype.displayArms = function(sideTex, topTex) {
 	 // Right arm upper
 	 this.scene.pushMatrix();
 	 	this.scene.translate(this.armToBodySpacing, this.wheelDiameterScale + this.bodyHeightScale, 0);
-	 	this.scene.rotate(Math.PI, 0, 1, 0);
 	 	this.scene.rotate(-this.rightArmAngle+Math.PI, 1, 0, 0);
 	 	
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
@@ -509,8 +494,7 @@ MyRobot.prototype.displayArms = function(sideTex, topTex) {
 	 this.scene.pushMatrix();
 	 	this.scene.translate(this.armToBodySpacing
 	 			, this.wheelDiameterScale + this.bodyHeightScale + this.armHeightScale*(-Math.cos(this.rightArmAngle))
-	 			, -this.armHeightScale*Math.sin(this.rightArmAngle));
-	 	this.scene.rotate(Math.PI, 0, 1, 0);
+	 			, this.armHeightScale*Math.sin(this.rightArmAngle));
 	 	this.scene.rotate(Math.PI-this.rightArmAngleLower, 1, 0, 0);
 	 	
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
@@ -548,7 +532,6 @@ MyRobot.prototype.displayMoveArms = function(sideTex, topTex) {
 MyRobot.prototype.displayEyes = function(sideTex, frontTex) {
 
 	 this.scene.pushMatrix();
-	 this.scene.rotate(Math.PI, 0, 1, 0);
 	 this.scene.pushMatrix();	// Left eye
 	 	this.scene.translate(this.eyeToEyeDistance, this.bodyHeightScale+this.headToBodySpacing+this.eyeHeightScale+this.wheelDiameterScale, 0);
 	 	this.scene.scale(this.eyeDiameterScale, this.eyeDiameterScale, this.eyeDepthScale);
@@ -587,20 +570,21 @@ MyRobot.prototype.displayMoveEyes = function(sideTex, frontTex) {
 }
  
 MyRobot.prototype.displayWheels = function(frontTex, sideTex) {
-	this.scene.pushMatrix();
-		this.scene.translate(this.bodyDiameterScale*Math.sin(this.angle + Math.PI/2), this.wheelDiameterScale, this.bodyDiameterScale*Math.cos(this.angle + Math.PI/2));
-		this.scene.rotate(this.angle+Math.PI/2, 0, 1, 0);
-		this.scene.rotate(this.leftWheelAngle, 0, 0, 1);
+	this.scene.pushMatrix();	// Left wheel
+		this.scene.translate(this.bodyDiameterScale, this.wheelDiameterScale, 0);
+		this.scene.rotate(this.leftWheelAngle, 1, 0, 0);
+		this.scene.rotate(Math.PI/2, 0, 1, 0);
 		this.scene.scale(this.wheelDiameterScale, this.wheelDiameterScale, this.wheelDepthScale);
  		if (typeof frontTex != "undefined") {
  			frontTex.apply();
  		}
 		this.wheel.display();
 	this.scene.popMatrix();
-	this.scene.pushMatrix();
-		this.scene.translate(-this.bodyDiameterScale*Math.sin(this.angle + Math.PI/2), this.wheelDiameterScale, -this.bodyDiameterScale*Math.cos(this.angle + Math.PI/2));
-		this.scene.rotate(this.angle+3*Math.PI/2, 0, 1, 0);
-		this.scene.rotate(-this.rightWheelAngle, 0, 0, 1);
+	
+	this.scene.pushMatrix();	// Right wheel
+		this.scene.translate(-this.bodyDiameterScale, this.wheelDiameterScale, 0);
+		this.scene.rotate(this.rightWheelAngle, 1, 0, 0);
+		this.scene.rotate(3*Math.PI/2, 0, 1, 0);
 		this.scene.scale(this.wheelDiameterScale, this.wheelDiameterScale, this.wheelDepthScale);
  		if (typeof frontTex != "undefined") {
  			frontTex.apply();
@@ -612,6 +596,7 @@ MyRobot.prototype.displayWheels = function(frontTex, sideTex) {
 MyRobot.prototype.displayMoveWheels = function() {
 	this.scene.pushMatrix();
 		this.scene.translate(this.x, this.y, this.z);
+		this.scene.rotate(this.angle, 0, 1, 0);
 		this.displayWheels();
 	this.scene.popMatrix();
 };
@@ -717,8 +702,8 @@ MyRobot.prototype.displayAppearance = function(appearanceSet, scale) {
 		this.updateVars(scale);
 	
 	this.scene.pushMatrix();
-	//this.scene.translate(this.x, this.y, this.z);	
-	//this.scene.rotate(this.angle, 0, 1, 0);
+	this.scene.translate(this.x, this.y, this.z);	
+	this.scene.rotate(this.angle, 0, 1, 0);
 	
 	if (typeof appearanceSet != "undefined") // texture set defined
 	{

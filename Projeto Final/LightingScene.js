@@ -247,12 +247,13 @@ LightingScene.prototype.update = function(currTime) {
 
 
 LightingScene.prototype.displayWindowWall = function() {
+	this.windowAppearance.apply();
+	
 	// Left Wall top
 	this.pushMatrix();
 		this.translate(0, 6.5, 7.5);
 		this.rotate(90 * degToRad, 0, 1, 0);
 		this.scale(15, 3, 0.2);
-		this.windowAppearance.apply();
 		this.leftWallTop.display();
 	this.popMatrix();
 	this.gl.clear(this.gl.DEPTH_BUFFER_BIT);
@@ -262,7 +263,6 @@ LightingScene.prototype.displayWindowWall = function() {
 		this.translate(0, 1, 7.5);
 		this.rotate(90 * degToRad, 0, 1, 0);
 		this.scale(15, 2, 0.2);
-		this.windowAppearance.apply();
 		this.leftWallBottom.display();
 	this.popMatrix();
 	this.gl.clear(this.gl.DEPTH_BUFFER_BIT);
@@ -272,7 +272,6 @@ LightingScene.prototype.displayWindowWall = function() {
 		this.translate(0, 3.5, 12.65);
 		this.rotate(90 * degToRad, 0, 1, 0);
 		this.scale(4.7, 3, 1);
-		this.windowAppearance.apply();
 		this.leftWallLeft.display();
 	this.popMatrix();
 	this.gl.clear(this.gl.DEPTH_BUFFER_BIT);
@@ -282,7 +281,6 @@ LightingScene.prototype.displayWindowWall = function() {
 		this.translate(0, 3.5, 2.35);
 		this.rotate(90 * degToRad, 0, 1, 0);
 		this.scale(4.7, 3, 1);
-		this.windowAppearance.apply();
 		this.leftWallRight.display();
 	this.popMatrix();
 	this.gl.clear(this.gl.DEPTH_BUFFER_BIT);
