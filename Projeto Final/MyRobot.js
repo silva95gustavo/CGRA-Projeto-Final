@@ -403,8 +403,8 @@ MyRobot.prototype.displayArms = function(sideTex, topTex) {
 
 	 // Left arm upper
 	 this.scene.pushMatrix();
-	 	this.scene.translate(-this.armToBodySpacing, this.wheelDiameterScale + this.bodyHeightScale, 0);
-	 	this.scene.rotate(-this.leftArmAngle+Math.PI, 1, 0, 0);
+	 	this.scene.translate(this.armToBodySpacing, this.wheelDiameterScale + this.bodyHeightScale, 0);
+	 	this.scene.rotate(Math.PI - this.leftArmAngle, 1, 0, 0);
 	 	
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
 	 	this.scene.scale(this.armDiameterScale, this.armDiameterScale, this.armHeightScale);
@@ -432,7 +432,7 @@ MyRobot.prototype.displayArms = function(sideTex, topTex) {
 	 
 	// Left arm lower
 	 this.scene.pushMatrix();
-	 	this.scene.translate(-this.armToBodySpacing
+	 	this.scene.translate(this.armToBodySpacing
 	 			, this.wheelDiameterScale + this.bodyHeightScale + this.armHeightScale*(-Math.cos(this.leftArmAngle))
 	 			, this.armHeightScale*Math.sin(this.leftArmAngle));
 	 	this.scene.rotate(Math.PI-this.leftArmAngleLower, 1, 0, 0);
@@ -463,9 +463,9 @@ MyRobot.prototype.displayArms = function(sideTex, topTex) {
 	 
 	 // Right arm upper
 	 this.scene.pushMatrix();
-	 	this.scene.translate(this.armToBodySpacing, this.wheelDiameterScale + this.bodyHeightScale, 0);
+	 	this.scene.translate(-this.armToBodySpacing, this.wheelDiameterScale + this.bodyHeightScale, 0);
 	 	this.scene.rotate(-this.rightArmAngle+Math.PI, 1, 0, 0);
-	 	this.scene.rotate(-this.waveAngle, 0, 0, 1);
+	 	this.scene.rotate(this.waveAngle, 0, 0, 1);
 	 	
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
 	 	this.scene.scale(this.armDiameterScale, this.armDiameterScale, this.armHeightScale);
@@ -493,11 +493,11 @@ MyRobot.prototype.displayArms = function(sideTex, topTex) {
 	 
 	// Right arm lower
 	 this.scene.pushMatrix();
-	 	this.scene.translate(this.armToBodySpacing + this.armHeightScale*Math.sin(this.waveAngle)
+	 	this.scene.translate(-this.armToBodySpacing - this.armHeightScale*Math.sin(this.waveAngle)
 	 			, this.wheelDiameterScale + this.bodyHeightScale + this.armHeightScale*(-Math.cos(this.rightArmAngle) + 1 - Math.cos(this.waveAngle))
 	 			, this.armHeightScale*Math.sin(this.rightArmAngle));
-	 	this.scene.rotate(Math.PI-this.rightArmAngleLower, 1, 0, 0);
-	 	this.scene.rotate(-this.waveAngleLower, 0, 0, 1);
+	 	this.scene.rotate(Math.PI - this.rightArmAngleLower, 1, 0, 0);
+	 	this.scene.rotate(this.waveAngleLower, 0, 0, 1);
 	 	
 	 	this.scene.rotate(-Math.PI/2, 1, 0, 0);
 	 	this.scene.scale(this.armDiameterScale, this.armDiameterScale, this.armHeightScale);
