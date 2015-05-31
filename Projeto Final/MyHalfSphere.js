@@ -36,7 +36,6 @@ MyHalfSphere.prototype.initBuffers = function() {
 		z = Math.sin(beta);
 		this.vertices.push(x, y, z);
 		this.normals.push(x, y, z);
-		//this.texCoords.push(Math.cos(beta)/2+0.5, -0/2+0.5);
 		this.texCoords.push(Math.asin(x)/Math.PI + 0.5, Math.asin(y)/Math.PI + 0.5);
 		verts++;
 

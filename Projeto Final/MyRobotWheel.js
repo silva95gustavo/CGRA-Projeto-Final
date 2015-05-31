@@ -21,7 +21,7 @@
  	var alfa = 0;
  	
  	/////////////////////////////////////////////////////////
- 	////////// Draw the cylinder of the cylinder ////////////
+ 	////////// Draw the cylinder of the wheel ////////////
  	/////////////////////////////////////////////////////////
 
  	this.indices = [];
@@ -33,24 +33,24 @@
  	for(j = 0; j <= this.stacks; j++)
 	{
 		this.vertices.push(1, 0, j / this.stacks);
-		this.normals.push(1, 0, j / this.stacks);
-		this.texCoords.push(0, 0);
+		this.normals.push(1, 0, 0);
+		this.texCoords.push(0,(j / this.stacks)/10);
 		verts += 1;
 
-		for(i = 0; i <= this.slices; i++)
+		for(i = 1; i <= this.slices; i++)
 		{
 			alfa+=ang;
 			x = Math.cos(alfa);
 			y = Math.sin(alfa);
 			this.vertices.push(x, y, j / this.stacks);
-			this.normals.push(x, y, j / this.stacks);
-			this.texCoords.push(0, 0);
+			this.normals.push(x, y, 0);
+			this.texCoords.push((i / this.slices)/10, (j / this.stacks)/10);
 			verts++;
 
 			if(j > 0 && i > 0)
 			{
-				this.indices.push(verts-1, verts-2, verts-this.slices-3);
-				this.indices.push(verts-this.slices-4, verts-this.slices-3, verts-2);
+				this.indices.push(verts-1, verts-2, verts-this.slices-2);
+				this.indices.push(verts-this.slices-3, verts-this.slices-2, verts-2);
 			}
 		}
 	}
